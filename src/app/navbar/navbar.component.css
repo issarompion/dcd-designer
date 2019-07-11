@@ -1,0 +1,53 @@
+:host {
+    background: #f1f1f1;
+    font-family: Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    font-display: swap;
+  }
+  .nav-links {
+    background: #2684b7;
+    overflow: hidden;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%;
+    min-width: 700px;
+    left: 0;
+    z-index: 99;
+  }
+  .nav-links a {
+    background-color: #2684b7;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    padding: 15px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+
+  .nav-links button {
+    display: inline-block;
+    text-align: center;
+    padding: 9px 10px;
+    text-decoration: none;
+  }
+
+  .nav-links span{
+    padding: 9px 10px;
+    text-decoration: none;
+  }
+  /* Change the color of links on hover */
+.nav-links a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  /* Add an active class to highlight the current page */
+  .nav-links a:active {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .logout{
+    float: right;
+    color: white;
+  }
+
