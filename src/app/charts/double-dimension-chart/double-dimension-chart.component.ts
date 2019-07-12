@@ -52,6 +52,7 @@ export class DoubleDimensionChartComponent {
 
      ngOnChanges(changes: SimpleChanges) {
 
+      if(!(changes.dimensions === undefined)){
         const val = changes.dimensions.currentValue
         //const val:Dimension[] = changes.values.currentValue
         console.log('got val: ', val);
@@ -84,6 +85,8 @@ export class DoubleDimensionChartComponent {
                 }
                 }
             }
+          }
        }
+       
 
 }

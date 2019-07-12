@@ -60,16 +60,15 @@ export class ThingComponent implements OnInit {
               const dim_unit = property.property_dimensions[i].unit
               const index = i
 
-              this.http.get(server_url+'api/things/'+this.thing.thing_id+'/properties/'+property.property_id+'?from='+from+'&to='+to)
+              this.http.get(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to)
               .toPromise().then(data => {
+                if(data['property'].values.length > 0){
                 this.dimensions.push(new Dimension(
-                  data['property'].name,
+                  property.property_name,
                   dim_name,
                   dim_unit,
                   this.getData(index,data['property'].values)
                   ))
-
-                  if(data['property'].values.length > 0){
                   const first_date = new Date(data['property'].values[0][0])
                   const last_date = new Date(data['property'].values[data['property'].values.length-1][0])
                   this.rangeDates = [first_date,last_date]
@@ -112,13 +111,30 @@ export class ThingComponent implements OnInit {
     getValues(rangeDates){
       if(rangeDates.length == 2){
         if(rangeDates[0] !== null && rangeDates[1]!== null){
+            this.dimensions = []
             const from : number = rangeDates[0].getTime(); 
             const to : number = rangeDates[1].getTime() + 24*60*60*1000 ; 
-            for(let dimension of this.dimensions){
-              this.http.get(server_url+'api/things/'+this.thing.thing_id+'/properties/'+"TODO"+'?from='+from+'&to='+to)
+
+            for (let property of this.thing.thing_properties) {
+              for(var i = 0; i < this.getDimensionSize(property); i++){
+              const dim_name =  property.property_dimensions[i].name
+              const dim_unit = property.property_dimensions[i].unit
+              const index = i
+
+              this.http.get(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to)
               .toPromise().then(data => {
+                if(data['property'].values.length > 0){
+                this.dimensions.push(new Dimension(
+                  property.property_name,
+                  dim_name,
+                  dim_unit,
+                  this.getData(index,data['property'].values)
+                  ))
+                }
               })
-            }
+              
+              }
+        };
 
         }
       }
@@ -165,8 +181,10 @@ colorScheme = {
 };
 
 firstunit:string
-dim1:string[]=[]
-dim2:string[]=[]
+//dim1:string[]=[]
+//dim2:string[]=[]
+dim1:any[] = []
+dim2:any[] = []
 
 handleChange(e) {
 // e = true or false => checkbox
@@ -176,44 +194,74 @@ this.dim2 = []
 for(let value of this.selectedDimensions){
   if(this.multi.length == 0){
     this.firstunit = value.unit
-    this.dim1.push(value.dimension)
+    //this.dim1.push(value.dimension)
+    this.addDim(value,this.dim1)
     if(value.unit != undefined && value.unit != ''){
-      this.yAxisLabel = this.dim1.toString() +' ('+value.unit+' )'
+      this.yAxisLabel = this.toString(this.dim1) +' ('+value.unit+')'
     }else{
-      this.yAxisLabel = this.dim1.toString() + ' (no unit)'
+      this.yAxisLabel = this.toString(this.dim1)+ ' (no unit)'
     }
     this.multi.push({
-      name : value.dimension,
+      name : value.dimension+ ' ('+value.property_name+')',
       series:value.data
       })
 
   }else{
     if(this.firstunit != value.unit){
-      this.dim2.push(value.dimension)
+      //this.dim2.push(value.dimension)
+      this.addDim(value,this.dim2)
       if(value.unit != undefined && value.unit != ''){
-        this.yAxisLabel2 = this.dim2.toString() +' ('+value.unit+' )'
+        this.yAxisLabel2 = this.toString(this.dim2) +' ('+value.unit+')'
       }else{
-        this.yAxisLabel2 = this.dim2.toString() + ' (no unit)'
+        this.yAxisLabel2 = this.toString(this.dim2) + ' (no unit)'
       }
       this.multi.push({
-        name : value.dimension,
+        name : value.dimension+ ' ('+value.property_name+')',
         secondAxis:true,
         series:value.data
         })
     }else{
-      this.dim1.push(value.dimension)
+      //this.dim1.push(value.dimension)
+      this.addDim(value,this.dim1)
       if(value.unit != undefined && value.unit != ''){
-        this.yAxisLabel = this.dim1.toString() +' ('+value.unit+' )'
+        this.yAxisLabel = this.toString(this.dim1) +' ('+value.unit+')'
       }else{
-        this.yAxisLabel = this.dim1.toString() + ' (no unit)'
+        this.yAxisLabel = this.toString(this.dim1) + ' (no unit)'
       }
       this.multi.push({
-        name : value.dimension,
+        name : value.dimension+ ' ('+value.property_name+')',
         series:value.data
         })
     }
   }
 }
+}
+
+addDim(value:Dimension,array:any[]){
+  if(array.length == 0){
+    array.push([[value.dimension],value.property_name])
+  }else{
+    array.forEach((e,index)=>{
+      if(value.property_name == e[1]){
+        e[0].push(value.dimension)
+        return
+      }
+      if(index == array.length-1){
+        array.push([[value.dimension],value.property_name])
+      }
+    })
+  }
+}
+
+toString(array:any[]):string{
+  var res = ""
+  for(var i=0; i <= array.length;i++){
+    if(i == array.length){
+      return res
+    }else{
+      res+="[ ["+array[i][0].toString()+"],"+array[i][1]+"] "
+    }
+  }
 }
 
 multi: any[] = [/*{name: 'Red',series: [{name: new Date(2017, 0, 1, 2, 34, 17),value: 294},{name: new Date(2017, 2, 1, 2, 34, 17),value:  264}]},*/]

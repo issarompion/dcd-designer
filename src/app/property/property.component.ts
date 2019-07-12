@@ -53,7 +53,7 @@ export class PropertyComponent implements OnInit {
               const dim_unit = this.ChildProperty.property_dimensions[i].unit
               const index = i
               this.dimensions.push(new Dimension(
-                data['property'].name,
+                this.ChildProperty.property_name,
                 dim_name,
                 dim_unit,
                 this.getData(index,data['property'].values)
@@ -135,7 +135,7 @@ export class PropertyComponent implements OnInit {
                 const dim_unit = this.ChildProperty.property_dimensions[i].unit
                 const index = i
                 this.dimensions.push(new Dimension(
-                  data['property'].name,
+                  this.ChildProperty.property_name,
                   dim_name,
                   dim_unit,
                   this.getData(index,data['property'].values)

@@ -26,6 +26,9 @@ export class StructuredThingsComponent implements OnInit {
 
   things : Thing[] = []
   structured_things : Thing[] = []
+  //Dialog property
+  display_property: boolean = false;
+  property_picked:Property = new Property({})
 
   constructor(
     private router: Router,
@@ -118,9 +121,30 @@ export class StructuredThingsComponent implements OnInit {
         return thing.thing_description
       }
     }
+    descriptionP(property:Property):string {
+      if(property.property_description == "" || property.property_description === undefined ){
+        return 'No description available'
+      }else{
+        return property.property_description 
+      }
+    }
 
     HasProperty(thing:Thing):boolean{
       return thing.thing_properties.length > 0
+    }
+
+    async setChild(property : Property){
+      this.property_picked = property
+    }
+
+    showDialog_property(property : Property) {
+        this.setChild(property).then(()=>this.display_property = true)
+        
+    }
+
+    nav_thing(thing:Thing){
+      this.router.navigate(['/page/thing'], {
+        state:{data:thing.json()}});
     }
 
   }

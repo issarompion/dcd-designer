@@ -33,6 +33,7 @@ export class RadarChartComponent {
 
     ngOnChanges(changes: SimpleChanges) {
 
+      if(!(changes.dimensions === undefined)){
         const val:Dimension[] = changes.dimensions.currentValue
         //const val:Dimension[] = changes.values.currentValue
         console.log('got val: ', val);
@@ -67,8 +68,9 @@ export class RadarChartComponent {
               this.radarChartData = [{data:[],label:this.property.property_type}]
             }
         }
+      }
 
-       }
+    }
 
        handleChange(e) {
         //e.value is the new value (is index)
