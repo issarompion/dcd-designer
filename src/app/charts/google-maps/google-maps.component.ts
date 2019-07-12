@@ -12,7 +12,6 @@ import {isPlatformServer} from "@angular/common";
 
 export class GoogleMapsComponent {
 
-    @Input() thing_name:string
     @Input() property:Property
     @Input() dimensions: Dimension;
     @Input() apiKey: string;
@@ -52,7 +51,7 @@ export class GoogleMapsComponent {
                     lng: last_lng,
                     icon: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
                     infoWindowOptions: {
-                    content: this.thing_name
+                    content: this.property.property_entitiy_id
                     }
                   }],
                   //fitBounds: true,
@@ -85,7 +84,7 @@ export class GoogleMapsComponent {
                     lng: _lng,
                     icon: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
                     infoWindowOptions: {
-                    content: this.thing_name
+                    content: this.property.property_entitiy_id
                     }
                   }],
                   //fitBounds: true,

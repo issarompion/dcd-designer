@@ -19,7 +19,6 @@ import {
 
 export class PropertyComponent implements OnInit {
 
-    @Input() ChildThing: Thing;
     @Input() ChildProperty: Property;
 
     chart_type : string;
@@ -41,7 +40,7 @@ export class PropertyComponent implements OnInit {
      BrowserUniversalInit(){
              const to : number = (new Date).getTime();
              const from : number = 0
-              this.http.get(server_url+'api/things/'+this.ChildThing.thing_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to)
+              this.http.get(server_url+'api/things/'+this.ChildProperty.property_entitiy_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to)
              .toPromise().then(data => {
               if(data['property'].values.length > 0){
               const first_date = new Date(data['property'].values[0][0])
@@ -127,7 +126,7 @@ export class PropertyComponent implements OnInit {
         if(rangeDates[0] !== null && rangeDates[1]!== null){
             const from : number = rangeDates[0].getTime(); 
             const to : number = rangeDates[1].getTime() + 24*60*60*1000 ; 
-             this.http.get(server_url+'api/things/'+this.ChildThing.thing_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to)
+             this.http.get(server_url+'api/things/'+this.ChildProperty.property_entitiy_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to)
             .toPromise().then(data => {
               this.dimensions=[]
               this.values = data['property'].values

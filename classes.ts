@@ -34,16 +34,18 @@ export class Person {
 
 
 export class Property {
+    proprety_entity: Thing
     property_id: string;
     property_name: string;
     property_description: string;
     property_type: string;
     property_dimensions: any[] = [];
     property_values: any[] = [];
-    property_entitiy_id:string
+    property_entitiy_id:string;
 
 
     constructor(params : {}) {
+            this.proprety_entity = params['entity']
             this.property_id = params['id']
             this.property_name = params['name']
             this.property_description = params['description']
@@ -60,7 +62,8 @@ export class Property {
             type : this.property_type,
             description: this.property_description,
             dimensions: this.property_dimensions,
-            value : this.property_values
+            values : this.property_values,
+            entityId : this.property_entitiy_id
         }
     }
 
@@ -121,24 +124,26 @@ export class Thing {
        this.thing_type = params['type']
        
        if(params['properties'] instanceof Array){
-           params['properties'].forEach(property => {
-               if(property instanceof Property){
-                   this.thing_properties.push(property)
-               }else{
-                   if(property.constructor === {}.constructor){
-                       this.thing_properties.push(new Property({
-                           id :property['id'],
-                           name : property['name'],
-                           description : property['description'],
-                           type : property['type'],
-                           dimensions : property['dimensions'],
-                           values : property['values']
-                       }
-                       ))
-                   }
-               }
-           })
-       }
+        params['properties'].forEach(property => {
+            if(property instanceof Property){
+                this.thing_properties.push(property)
+            }else{
+                if(property.constructor === {}.constructor){
+                    this.thing_properties.push(new Property({
+                        entity : this, 
+                        id : property['id'],
+                        name : property['name'],
+                        description : property['description'],
+                        type : property['type'],
+                        dimensions : property['dimensions'],
+                        values : property['values'],
+                        entityId : property['entityId']
+                    }
+                    ))
+                }
+            }
+        })
+    }
    }
    }
 
