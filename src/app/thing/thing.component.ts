@@ -41,11 +41,11 @@ export class ThingComponent implements OnInit {
                 this.router.navigate(['/subject/page/home'])
             }else{
                 this.thing = new Thing({
-                    thing_id : history.state.data.id,
-                    thing_name : history.state.data.name,
-                    thing_type : history.state.data.type,
-                    thing_description : history.state.data.description,
-                    thing_properties : history.state.data.properties
+                    id : history.state.data.id,
+                    name : history.state.data.name,
+                    type : history.state.data.type,
+                    description : history.state.data.description,
+                    properties : history.state.data.properties
                 })
                 this.BrowserUniversalInit();
             }

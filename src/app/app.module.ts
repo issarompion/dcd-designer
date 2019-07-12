@@ -5,7 +5,7 @@ import {FormsModule} from '@angular/forms';
 
 //Components
 import {AppComponent} from './app.component';
-import {HomeComponent, DialogAddThing, DialogAddProperty, DialogJWT} from './home/home.component';
+import {HomeComponent} from './home/home.component';
 import {AboutComponent} from './about/about.component';
 import {NotificationsComponent} from './notifications/notifications.component';
 import { NavbarComponent} from './navbar/navbar.component';
@@ -17,6 +17,8 @@ import {DoubleDimensionChartComponent} from './charts/double-dimension-chart/dou
 import {GoogleMapsComponent} from './charts/google-maps/google-maps.component';
 import {LineChartComponent} from './charts/line-chart/line-chart.component'
 import {RadarChartComponent} from './charts/radar-chart/radar-chart.component'
+import {ThingsComponent, DialogAddThing, DialogAddProperty, DialogJWT} from './things/things.component'
+import {StructuredThingsComponent} from './structured_things/structured_things.component'
 
 //Http
 import {HttpClientModule} from '@angular/common/http';
@@ -69,6 +71,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     GoogleMapsComponent,
     LineChartComponent,
     RadarChartComponent,
+    ThingsComponent,
+    StructuredThingsComponent,
 
     DialogAddThing,
     DialogAddProperty,
@@ -84,6 +88,7 @@ import { ClipboardModule } from 'ngx-clipboard';
       {path : 'page/about', component : AboutComponent, pathMatch: 'full'},
       {path : 'page/notifications', component : NotificationsComponent, pathMatch: 'full'},
       {path : 'page/thing',component : ThingComponent, pathMatch : 'full'},
+      {path : 'page/things',component : ThingsComponent, pathMatch : 'full'},
       {path : '**',redirectTo: '/page/home',pathMatch: 'full'},
     ]),
     TransferHttpCacheModule,
