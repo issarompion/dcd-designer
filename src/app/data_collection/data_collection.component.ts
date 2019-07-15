@@ -16,9 +16,6 @@ import {
 } from "@angular/common/http";
 
 import {isPlatformServer} from "@angular/common";
-import { stringify } from '@angular/compiler/src/util';
-import { IfStmt } from '@angular/compiler';
-
 
 @Component({
     selector: 'app-data-collection',
@@ -30,6 +27,17 @@ export class DataCollectionComponent implements OnInit {
   things : Thing[] = []
   data_collection_things : Thing[] = []
   rangesDates : number[][] = []
+  time_ms : number = 3600000 // 1 hous in ms
+
+  precisions: {}[] = [
+    {value: 60000, viewValue: '1 minutes'},
+    {value: 600000, viewValue: '10 minutes'},
+    {value: 1800000, viewValue: '1/2 hour'},
+    {value: 3600000, viewValue: '1 hour'},
+    {value: 14400000, viewValue: '4 hours'},
+    {value: 43200000, viewValue: '12 hours'},
+    {value: 86400000, viewValue: '24 hours'},
+  ];
 
   //Dialog property
   display_property: boolean = false;
@@ -77,7 +85,6 @@ export class DataCollectionComponent implements OnInit {
     }
 
     FillDataCollectionArrayThing(time_s:number){
-     //const time_ms = time_s*1000
      const to : number = (new Date).getTime();
      const from : number = 0
 
@@ -211,6 +218,11 @@ export class DataCollectionComponent implements OnInit {
       }else{
         return
       }
+    }
+
+    changePrecision(event){
+      console.log("changePrecision",this.time_ms,event.value)
+      this.FillDataCollectionArrayThing(this.time_ms)
     }
 
 

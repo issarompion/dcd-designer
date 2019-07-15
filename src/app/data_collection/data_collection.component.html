@@ -1,3 +1,13 @@
+<div class = "precision-container">
+        <mat-form-field>
+                <mat-label>Precision</mat-label>
+                <mat-select [(ngModel)]="time_ms" (selectionChange)="changePrecision($event)">
+                  <mat-option *ngFor="let precision of precisions " [value]="precision.value">
+                    {{precision.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+</div>
 <div class = "thing-container">
         <div class = thing-card *ngFor="let thing of data_collection_things"> <!-- Sort things -->
                 <div  class="card card-chart" id = card_i>
