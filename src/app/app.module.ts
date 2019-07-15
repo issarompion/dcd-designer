@@ -2,6 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import { DatePipe } from '@angular/common'
 
 //Components
 import {AppComponent} from './app.component';
@@ -19,6 +20,7 @@ import {LineChartComponent} from './charts/line-chart/line-chart.component'
 import {RadarChartComponent} from './charts/radar-chart/radar-chart.component'
 import {ThingsComponent, DialogAddThing, DialogAddProperty, DialogJWT} from './things/things.component'
 import {StructuredThingsComponent} from './structured_things/structured_things.component'
+import {DataCollectionComponent} from './data_collection/data_collection.component'
 
 //Http
 import {HttpClientModule} from '@angular/common/http';
@@ -30,6 +32,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 //PrimeNG
 import {DialogModule} from 'primeng/dialog';
@@ -73,6 +76,7 @@ import { ClipboardModule } from 'ngx-clipboard';
     RadarChartComponent,
     ThingsComponent,
     StructuredThingsComponent,
+    DataCollectionComponent,
 
     DialogAddThing,
     DialogAddProperty,
@@ -108,11 +112,13 @@ import { ClipboardModule } from 'ngx-clipboard';
     MatSelectModule,
     MatDialogModule,
     MatInputModule,
-    ClipboardModule
+    ClipboardModule,
+    MatSlideToggleModule
     
     
   ],
   providers: [
+    DatePipe
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

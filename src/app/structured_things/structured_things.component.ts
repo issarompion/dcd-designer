@@ -142,6 +142,15 @@ export class StructuredThingsComponent implements OnInit {
         
     }
 
+    delete_property(property:Property){
+      if ( confirm( "Delete "+property.property_name+" ?" ) ) {
+        this.http.delete(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id)
+       .toPromise().then(data => {
+         window.location.reload(); //TODO make a reload req ?
+       })
+     }
+    }
+
     nav_thing(thing:Thing){
       this.router.navigate(['/page/thing'], {
         state:{data:thing.json()}});

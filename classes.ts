@@ -34,7 +34,7 @@ export class Person {
 
 
 export class Property {
-    proprety_entity: Thing
+    //proprety_entity: Thing
     property_id: string;
     property_name: string;
     property_description: string;
@@ -45,7 +45,7 @@ export class Property {
 
 
     constructor(params : {}) {
-            this.proprety_entity = params['entity']
+            //this.proprety_entity = params['entity']
             this.property_id = params['id']
             this.property_name = params['name']
             this.property_description = params['description']
@@ -170,6 +170,28 @@ export class Thing {
            }
          }
    }
+
+   update_properties(properties:Array<Property>){
+    properties.forEach(property => {
+                if(!this.contains(property.property_id)){
+                    this.thing_properties.push(property)
+                }else{
+                    console.log(property.property_id,'already there')
+                }
+    })
+}
+
+private contains(property_id:string):boolean{
+    for (var i = 0; i <= this.thing_properties.length; i ++) {
+        if(i < this.thing_properties.length){
+            if(property_id == this.thing_properties[i].property_id){
+                return true
+            }
+        }else{
+            return false
+        }
+      }
+}
 
 }
 

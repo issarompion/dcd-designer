@@ -38,6 +38,7 @@ export class PropertyComponent implements OnInit {
      }
  
      BrowserUniversalInit(){
+            if(this.ChildProperty.property_values.length == 0){
              const to : number = (new Date).getTime();
              const from : number = 0
               this.http.get(server_url+'api/things/'+this.ChildProperty.property_entitiy_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to)
@@ -59,6 +60,7 @@ export class PropertyComponent implements OnInit {
                 this.getData(index,data['property'].values)
                 ))
               }
+            
              
              switch(this.ChildProperty.property_type) {
                  case "LOCATION": {
@@ -102,10 +104,70 @@ export class PropertyComponent implements OnInit {
       
               }
              })
+         }else{
+           const first_date = new Date(this.ChildProperty.property_values[0][0])
+           const last_date = new Date(this.ChildProperty.property_values[this.ChildProperty.property_values.length-1][0])
+           this.rangeDates = [first_date,last_date]
+           this.values = this.ChildProperty.property_values
+           for(var i = 0; i < this.getDimensionSize(this.ChildProperty); i++){
+           const dim_name =  this.ChildProperty.property_dimensions[i].name
+           const dim_unit = this.ChildProperty.property_dimensions[i].unit
+           const index = i
+           this.dimensions.push(new Dimension(
+             this.ChildProperty.property_name,
+             dim_name,
+             dim_unit,
+             this.getData(index,this.ChildProperty.property_values)
+             ))
+           }
+         
+          
+          switch(this.ChildProperty.property_type) {
+              case "LOCATION": {
+               this.http.get(server_url+'mapsKey')
+               .toPromise().then(data => {
+                 this.apiKey=data['key']
+               })
+                  this.chart_type = "MAPS"
+                  break
+              }
+
+            //3D 
+            case "TWELVE_DIMENSIONS":
+            case "ELEVEN_DIMENSIONS":
+            case "TEN_DIMENSIONS":
+            case "NINE_DIMENSIONS":
+            case "EIGHT_DIMENSIONS":
+            case "SEVEN_DIMENSIONS":
+            case "SIX_DIMENSIONS":
+            case "FIVE_DIMENSIONS":
+            case "FOUR_DIMENSIONS":
+            case "THREE_DIMENSIONS":
+            case "GYROSCOPE":
+            case "GRAVITY":
+            case "MAGNETIC_FIELD":
+            case "GRAVITY":
+            case "ROTATION_VECTOR":
+            case "ACCELEROMETER" : {
+              this.chart_type = "RADAR"
+              break
+          } 
+           case "HEART_RATE":
+           case "TWO_DIMENSIONS" : {
+             this.chart_type = "DOUBLE"
+              break
+          }
+              default: {
+                  this.chart_type = "LINE"
+                  break
+              }
+   
+           }
          }
+        }
  
 
-    getData(index,values:[]): {value:number,name:Date}[]{
+    getData(index,values:any[]): {value:number,name:Date}[]{
       var array :  {value:number,name:Date}[] = []
       for(var i = 0; i <= values.length; i++){
         if(i == values.length){
