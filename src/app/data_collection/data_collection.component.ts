@@ -28,6 +28,7 @@ export class DataCollectionComponent implements OnInit {
   data_collection_things : Thing[] = []
   rangesDates : number[][] = []
   time_ms : number = 3600000 // 1 hous in ms
+  RangeTime:number[]
 
   precisions: {}[] = [
     {value: 60000, viewValue: '1 minutes'},
@@ -121,6 +122,7 @@ export class DataCollectionComponent implements OnInit {
         let to_date_pipe = this.datepipe.transform(to_date, 'yyyy-MM-dd HH:mm:ss');
         const new_thing = new Thing({
           name : 'from ' + from_date_pipe + ' to ' + to_date_pipe,
+          description : from + '-' + to
         })
         this.data_collection_things.push(new_thing)
 
@@ -245,13 +247,13 @@ export class DataCollectionComponent implements OnInit {
       return thing.thing_properties.length > 0
     }
 
-    async setChild(property : Property){
+    async setChild(thing:Thing,property : Property){
+      this.RangeTime = this.getRangeTime(thing)
       this.property_picked = property
     }
 
-    showDialog_property(property : Property) {
-        this.setChild(property).then(()=>this.display_property = true)
-        
+    showDialog_property(thing:Thing,property : Property) {
+        this.setChild(thing,property).then(()=>this.display_property = true)
     }
 
     delete_property(property:Property){
@@ -264,8 +266,21 @@ export class DataCollectionComponent implements OnInit {
     }
 
     nav_thing(thing:Thing){
+      //console.log(thing.thing_description.split("-")[0])
+      //console.log(thing.thing_description.split("-")[1])
+      //const range = [parseInt(thing.thing_description)]
+      const range = this.getRangeTime(thing)
+      console.log(range)
       this.router.navigate(['/page/thing'], {
-        state:{data:thing.json()}});
+        state:{
+          data:thing.json(),
+          range:range
+        }
+      });
+    }
+
+    getRangeTime(thing:Thing):number[]{
+      return [parseInt(thing.thing_description.split("-")[0],10),parseInt(thing.thing_description.split("-")[1],10)]
     }
     
   }

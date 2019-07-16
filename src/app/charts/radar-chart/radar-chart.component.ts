@@ -27,7 +27,8 @@ export class RadarChartComponent {
          radarChartData: ChartDataSets[];
 
          showData : boolean = false
-        index : number = 0
+         index : number = 0
+         sliderSize:number = 0
 
     constructor(@Inject(PLATFORM_ID) private platformId: Object,) {}
 
@@ -37,6 +38,7 @@ export class RadarChartComponent {
         const val:Dimension[] = changes.dimensions.currentValue
         //const val:Dimension[] = changes.values.currentValue
         console.log('got val: ', val);
+        this.sliderSize = val[0].data.length -1
  
         if(val.length>0){
             if(val[0].data.length>0){

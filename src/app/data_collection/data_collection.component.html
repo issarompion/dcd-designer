@@ -38,7 +38,7 @@
                                                                             <td>{{property.property_name}}</td>
                                                                             <td>{{property.property_id}}</td> 
                                                                             <td>
-                                                                            <button mat-icon-button color = "primary" (click)="showDialog_property(property)"  >
+                                                                            <button mat-icon-button color = "primary" (click)="showDialog_property(thing,property)"  >
                                                                                     <i class="fas fa-clone" ></i>
                                                                                     </button>
                                                                             </td>    
@@ -62,7 +62,7 @@
  [maximizable]="true" [baseZIndex]="10000">
 
  <div>
- <app-property *ngIf = display_property [ChildProperty]="property_picked" ></app-property>
+ <app-property *ngIf = display_property [ChildProperty]="property_picked" [RangeTime]="RangeTime" ></app-property>
  </div>
  <p-footer>
          <div class ="property_description">

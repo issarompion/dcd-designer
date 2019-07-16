@@ -25,6 +25,8 @@ export class ThingComponent implements OnInit {
     dimensions:Dimension[] =[]
     selectedDimensions:Dimension[] = []
     displayedColumns: string[] = ['name', 'type', 'settings'];
+    RangeTime: number[];
+    showcalendar:boolean = true
 
     constructor(
         private router: Router,
@@ -47,15 +49,26 @@ export class ThingComponent implements OnInit {
                     description : history.state.data.description,
                     properties : history.state.data.properties
                 })
-                this.BrowserUniversalInit();
+
+                if(history.state.range === undefined){
+                  const from : number = 0
+                  const to : number = (new Date).getTime();
+                  this.BrowserUniversalInit(from,to);
+                }else{
+                  console.log('history range',history.state.range)
+                  this.RangeTime = history.state.range
+                  const from : number = history.state.range[0]
+                  const to : number = history.state.range[1]
+                  this.BrowserUniversalInit(from,to);
+                }
             }
         }
     }
-    BrowserUniversalInit() {
+    BrowserUniversalInit(from:number,to:number) {
         for (let property of this.thing.thing_properties) {
               for(var i = 0; i < this.getDimensionSize(property); i++){
-              const to : number = (new Date).getTime(); //current UNIX timestamp (in ms)
-              const from : number = 0 //to - 24*60*60*1000 //1 day before UNIX timestamp (in ms)
+              //const to : number = (new Date).getTime(); //current UNIX timestamp (in ms)
+              //const from : number = 0 //to - 24*60*60*1000 //1 day before UNIX timestamp (in ms)
               const dim_name =  property.property_dimensions[i].name
               const dim_unit = property.property_dimensions[i].unit
               const index = i
@@ -71,14 +84,27 @@ export class ThingComponent implements OnInit {
                   ))
                   const first_date = new Date(data['property'].values[0][0])
                   const last_date = new Date(data['property'].values[data['property'].values.length-1][0])
-                  this.rangeDates = [first_date,last_date]
+                  //this.rangeDates = [first_date,last_date]
+                  console.log(first_date,last_date)
+                  if(this.rangeDates === undefined){
+                    this.rangeDates = [first_date,last_date]
+                  }else{
+                    if(first_date.getTime()<this.rangeDates[0].getTime()){
+                      this.rangeDates[0]=first_date
+                      this.showcalendar = !this.showcalendar
+                    }
+                    if(last_date.getTime()>this.rangeDates[1].getTime()){
+                      this.rangeDates[1]=last_date
+                      this.showcalendar = !this.showcalendar
+                    }
+                  }
                   }
               })
               }
         };
     }
 
-    getData(index,values:[]): {value:number,name:Date}[]{
+    getData(index,values:any[]): {value:number,name:Date}[]{
       var array :  {value:number,name:Date}[] = []
       for(var i = 0; i <= values.length; i++){
         if(i == values.length){

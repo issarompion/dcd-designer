@@ -77,6 +77,7 @@ export class StructuredThingsComponent implements OnInit {
         const new_thing = new Thing({
           name : property.property_type,
           type : property.property_type,
+          description : property.property_type,
           properties : [property]
         })
         //new_thing.thing_properties.push(property)

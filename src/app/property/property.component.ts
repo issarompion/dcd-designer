@@ -20,6 +20,7 @@ import {
 export class PropertyComponent implements OnInit {
 
     @Input() ChildProperty: Property;
+    @Input() RangeTime: number[];
 
     chart_type : string;
     values : any[] = []
@@ -33,14 +34,22 @@ export class PropertyComponent implements OnInit {
          if (isPlatformServer(this.platformId)) {
            //server side
              } else {
-              this.BrowserUniversalInit()
+              if(this.RangeTime === undefined){
+                const from : number = 0
+                const to : number = (new Date).getTime();
+                this.BrowserUniversalInit(from,to)
+              }else{
+                const from : number = this.RangeTime[0]
+                const to : number = this.RangeTime[1];
+                this.BrowserUniversalInit(from,to)
+              }
+              
            }
      }
  
-     BrowserUniversalInit(){
-            if(this.ChildProperty.property_values.length == 0){
-             const to : number = (new Date).getTime();
-             const from : number = 0
+     BrowserUniversalInit(from:number,to:number){
+             //const to : number = (new Date).getTime();
+             //const from : number = 0
               this.http.get(server_url+'api/things/'+this.ChildProperty.property_entitiy_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to)
              .toPromise().then(data => {
               if(data['property'].values.length > 0){
@@ -104,66 +113,6 @@ export class PropertyComponent implements OnInit {
       
               }
              })
-         }else{
-           const first_date = new Date(this.ChildProperty.property_values[0][0])
-           const last_date = new Date(this.ChildProperty.property_values[this.ChildProperty.property_values.length-1][0])
-           this.rangeDates = [first_date,last_date]
-           this.values = this.ChildProperty.property_values
-           for(var i = 0; i < this.getDimensionSize(this.ChildProperty); i++){
-           const dim_name =  this.ChildProperty.property_dimensions[i].name
-           const dim_unit = this.ChildProperty.property_dimensions[i].unit
-           const index = i
-           this.dimensions.push(new Dimension(
-             this.ChildProperty.property_name,
-             dim_name,
-             dim_unit,
-             this.getData(index,this.ChildProperty.property_values)
-             ))
-           }
-         
-          
-          switch(this.ChildProperty.property_type) {
-              case "LOCATION": {
-               this.http.get(server_url+'mapsKey')
-               .toPromise().then(data => {
-                 this.apiKey=data['key']
-               })
-                  this.chart_type = "MAPS"
-                  break
-              }
-
-            //3D 
-            case "TWELVE_DIMENSIONS":
-            case "ELEVEN_DIMENSIONS":
-            case "TEN_DIMENSIONS":
-            case "NINE_DIMENSIONS":
-            case "EIGHT_DIMENSIONS":
-            case "SEVEN_DIMENSIONS":
-            case "SIX_DIMENSIONS":
-            case "FIVE_DIMENSIONS":
-            case "FOUR_DIMENSIONS":
-            case "THREE_DIMENSIONS":
-            case "GYROSCOPE":
-            case "GRAVITY":
-            case "MAGNETIC_FIELD":
-            case "GRAVITY":
-            case "ROTATION_VECTOR":
-            case "ACCELEROMETER" : {
-              this.chart_type = "RADAR"
-              break
-          } 
-           case "HEART_RATE":
-           case "TWO_DIMENSIONS" : {
-             this.chart_type = "DOUBLE"
-              break
-          }
-              default: {
-                  this.chart_type = "LINE"
-                  break
-              }
-   
-           }
-         }
         }
  
 

@@ -47,7 +47,8 @@
                   </table>
 </div>
 <div class = date-picker-container>
-        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="getValues(rangeDates)"></p-calendar>
+        <p-calendar *ngIf="showcalendar" [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="getValues(rangeDates)"></p-calendar>
+        <p-calendar *ngIf="!showcalendar" [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="getValues(rangeDates)"></p-calendar>
 </div>
 </div>
 
@@ -59,8 +60,9 @@
                   <h4 class="card-title">{{property.property_name}}</h4>
               </div>
               <div class="card-body">
-                        <app-property [ChildThing]="thing" [ChildProperty]="property" ></app-property>
-              
+                      <div class = "property-container">
+                         <app-property [ChildProperty]="property" [RangeTime] = "RangeTime" ></app-property>
+                      </div>
               </div>
               <div class="card-footer">
               </div>
