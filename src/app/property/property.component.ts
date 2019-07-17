@@ -1,6 +1,6 @@
 import { Component, Inject,PLATFORM_ID,Input, OnInit} from '@angular/core';
 
-import { Thing, Property,Dimension, server_url } from '.../../../classes'
+import { Thing, Property,Dimension, server_url } from '../../classes'
 
 import {isPlatformServer} from "@angular/common";
 

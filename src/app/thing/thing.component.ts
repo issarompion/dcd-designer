@@ -1,7 +1,7 @@
 import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { isPlatformServer } from "@angular/common";
 import { Router} from '@angular/router';
-import { Thing,Property, Dimension, server_url } from '.../../../classes'
+import { Thing,Property, Dimension, server_url } from '../../classes'
 
 
 import {

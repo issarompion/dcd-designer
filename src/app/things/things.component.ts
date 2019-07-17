@@ -1,7 +1,7 @@
 import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import { Thing,Property,PropertyType,server_url } from '.../../../classes'
+import { Thing,Property,PropertyType,server_url } from '../../classes'
 
 import { Router} from '@angular/router';
 import { timeout} from 'rxjs/operators';

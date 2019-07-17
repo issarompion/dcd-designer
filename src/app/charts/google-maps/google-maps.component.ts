@@ -1,6 +1,6 @@
 import { Component, Inject,PLATFORM_ID,Input,SimpleChanges} from '@angular/core';
 
-import {Property,Dimension} from '.../../../classes'
+import {Property,Dimension} from '../../../classes'
 
 import {isPlatformServer} from "@angular/common";
 
