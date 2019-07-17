@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "../dist",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -17,5 +17,9 @@
       "dom"
     ]
   },
-  "include": ["server.ts", "prerender.ts"]
+  "include": ["server.ts", "prerender.ts"],
+  "exclude": [
+    "api/index.ts",
+    "app/**"
+  ]
 }

@@ -177,7 +177,7 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app_dev.json",
+            "tsConfig": "src/tsconfig.app_dev.json",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -230,8 +230,8 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/app/server",
-            "main": "src/server.ts",
-            "tsConfig": "tsconfig.server_dev.json",
+            "main": "src/server_dev.ts",
+            "tsConfig": "src/tsconfig.server_dev.json",
             "sourceMap": {
               "scripts": true,
               "styles": false
@@ -284,7 +284,7 @@
           "options": {
             "main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec_dev.json",
+            "tsConfig": "src/tsconfig.spec_dev.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
@@ -300,8 +300,8 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "tsconfig.app_dev.json",
-              "tsconfig.spec_dev.json",
+              "src/tsconfig.app_dev.json",
+              "src/tsconfig.spec_dev.json",
               "e2e/tsconfig.json"
             ],
             "exclude": [
