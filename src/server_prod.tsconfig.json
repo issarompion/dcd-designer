@@ -19,7 +19,7 @@
   },
   "include": ["server.ts", "prerender.ts"],
   "exclude": [
-    "api/index.ts",
+    "api/**",
     "app/**"
   ]
 }

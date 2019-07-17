@@ -7,7 +7,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve designer",
+    "start": "ng serve dcd-designer",
     "build": "ng build dcd-designer --prod --build-optimizer=false",
     "lint": "ng lint dcd-designer",
     "build:client-and-server-bundles": "npm run build && ng run dcd-designer:server:production",
