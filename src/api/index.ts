@@ -101,8 +101,8 @@ export function createRoutes(app){
         // The `isAuthenticated` is available because of Passport.js
         if (!req.isAuthenticated()) {
             req.session.redirectTo = req.url;
-          //res.redirect(baseUrl+'/auth');
-          res.redirect('/subject'+'/auth');
+          res.redirect(baseUrl+'/auth');
+          //res.redirect('/subject'+'/auth');
             return
         }
         next()
@@ -122,12 +122,12 @@ export function createRoutes(app){
       res.render('index', { req });
   });
   
-  //app.get(baseUrl+'/auth', passport.authenticate('oauth2'));
-  app.get('/subject'+'/auth', passport.authenticate('oauth2'));
+  app.get(baseUrl+'/auth', passport.authenticate('oauth2'));
+  //app.get('/subject'+'/auth', passport.authenticate('oauth2'));
   
   
-  //app.get(baseUrl+'/auth/callback',
-  app.get('/subject'+'/auth/callback',
+  app.get(baseUrl+'/auth/callback',
+  //app.get('/subject'+'/auth/callback',
   
   passport.authenticate('oauth2',
   {failureRedirect: '/auth'}),
