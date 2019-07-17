@@ -103,7 +103,7 @@ const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./server/main');
   app.engine('html', (_, options, callback) => {
     const opts = {
         document: template,
-        url: options.req.url,
+        url: options['req'].url,
         extraProviders: [
             provideModuleMap(LAZY_MODULE_MAP),
             {
@@ -112,7 +112,7 @@ const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./server/main');
             },
             {
               provide: 'token',
-              useValue: options.req.user.accessToken
+              useValue: options['req'].user.accessToken
             },
         ]
     };
@@ -156,8 +156,8 @@ passport.authenticate('oauth2',
 {failureRedirect: '/auth'}),
 (req, res) => {
 // After success, redirect to the page we came from originally
-console.log('/auth/callback ' + req.session.redirectTo);
-res.redirect(req.session.redirectTo)
+console.log('/auth/callback ' + req['session'].redirectTo);
+res.redirect(req['session'].redirectTo)
 }
 );
 
@@ -166,7 +166,7 @@ app.delete(baseUrl+"/oauth2/auth/sessions/login", checkAuthentication,
  async (req, res, next) => {
   const subject = req.query.subject
   console.log('/oauth2/auth/sessions/login'+'?subject=' + subject)
-  const result = await PersonService.logout(subject,req.user.accessToken)
+  const result = await PersonService.logout(subject,req['user'].accessToken)
   console.log(result)
   res.send(result)
 });
@@ -192,7 +192,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
   app.get(baseUrl+'/api/things', checkAuthentication,
     async (req, res, next) => {
         console.log('api/things')
-        const result = await ThingService.list(req.user.accessToken)
+        const result = await ThingService.list(req['user'].accessToken)
         res.send(result)
     });
 
@@ -200,7 +200,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
      async (req, res, next) => {
         const thingId = req.params.thingId;
         console.log('api/things/'+thingId)
-        const result = await ThingService.read(thingId,req.user.accessToken)
+        const result = await ThingService.read(thingId,req['user'].accessToken)
         res.send(result)
     });
 
@@ -208,7 +208,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
     app.get(baseUrl+'/api/user', checkAuthentication,
      async (req, res, next) => {
         console.log('api/user')
-        const result = await PersonService.readUser(req.user.accessToken)
+        const result = await PersonService.readUser(req['user'].accessToken)
         res.send(result)
     });
 
@@ -216,7 +216,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
      async (req, res, next) => {
         const userId = req.params.userId;
         console.log('api/user/'+userId)
-        const result = await PersonService.readUserId(userId,req.user.accessToken)
+        const result = await PersonService.readUserId(userId,req['user'].accessToken)
         res.send(result)
     });
 
@@ -227,7 +227,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
       const from = req.query.from
       const to = req.query.to 
       console.log('api/things/'+thingId+'/properties/'+propertyId+'?from=' + from + '&to=' + to);
-      const result = await PropertyService.read(thingId,propertyId,from,to,req.user.accessToken)
+      const result = await PropertyService.read(thingId,propertyId,from,to,req['user'].accessToken)
       res.send(result)
     });
 
@@ -235,7 +235,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
      async (req, res, next) => {
         const thingId = req.params.thingId
         console.log('delete','api/things/'+thingId)
-        const result = await ThingService.delete(thingId,req.user.accessToken)
+        const result = await ThingService.delete(thingId,req['user'].accessToken)
         res.send(result)
         }
       );
@@ -245,7 +245,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
         const thingId = req.params.thingId
         const propertyId = req.params.propertyId
         console.log('delete','api/things/'+thingId+'/properties/'+propertyId)
-        const result = await PropertyService.delete(thingId,propertyId,req.user.accessToken)
+        const result = await PropertyService.delete(thingId,propertyId,req['user'].accessToken)
         res.send(result)
         }
       );
@@ -255,7 +255,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
           const jwt = req.query.jwt
           const body = req.body
           console.log('post','api/things/'+'?jwt=' + jwt,body)
-          const result = await ThingService.create(body,jwt,req.user.accessToken)
+          const result = await ThingService.create(body,jwt,req['user'].accessToken)
           res.send(result)
           }
         );
@@ -265,7 +265,7 @@ app.get(baseUrl+'/mapsKey',checkAuthentication
             const thingId = req.params.thingId
             const body = req.body
             console.log('post','api/things/'+thingId+'/properties',body)
-            const result = await PropertyService.create(thingId,body,req.user.accessToken)
+            const result = await PropertyService.create(thingId,body,req['user'].accessToken)
             res.send(result)
             }
           );
