@@ -19,8 +19,8 @@ import {GoogleMapsComponent} from './charts/google-maps/google-maps.component';
 import {LineChartComponent} from './charts/line-chart/line-chart.component'
 import {RadarChartComponent} from './charts/radar-chart/radar-chart.component'
 import {ThingsComponent, DialogAddThing, DialogAddProperty, DialogJWT} from './things/things.component'
-import {StructuredThingsComponent} from './structured_things/structured_things.component'
-import {DataCollectionComponent} from './data_collection/data_collection.component'
+import {TypeCollectionComponent} from './type_collection/type_collection.component'
+import {TimeCollectionComponent} from './time_collection/time_collection.component'
 
 //Http
 import {HttpClientModule} from '@angular/common/http';
@@ -63,6 +63,8 @@ import { ClipboardModule } from 'ngx-clipboard';
   declarations: [
     AppComponent,
     HomeComponent,
+    TimeCollectionComponent,
+    TypeCollectionComponent,
     AboutComponent,
     NotificationsComponent,
     NavbarComponent,
@@ -75,9 +77,6 @@ import { ClipboardModule } from 'ngx-clipboard';
     LineChartComponent,
     RadarChartComponent,
     ThingsComponent,
-    StructuredThingsComponent,
-    DataCollectionComponent,
-
     DialogAddThing,
     DialogAddProperty,
     DialogJWT

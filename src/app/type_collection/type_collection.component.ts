@@ -1,10 +1,9 @@
 import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
 
-import { Thing,Property,PropertyType,server_url } from '../../classes'
+import { Thing,Property,server_url } from '../../classes'
 
 import { Router} from '@angular/router';
-
 
 import {
   HttpClient,
@@ -14,15 +13,13 @@ import {
 } from "@angular/common/http";
 
 import {isPlatformServer} from "@angular/common";
-import { stringify } from '@angular/compiler/src/util';
-
 
 @Component({
-    selector: 'app-structured-things',
-    templateUrl: './structured_things.component.html',
-    styleUrls: ['./structured_things.component.css']
+  selector: 'app-type-collection',
+  templateUrl: './type_collection.component.html',
+  styleUrls: ['./type_collection.component.css']
 })
-export class StructuredThingsComponent implements OnInit {
+export class TypeCollectionComponent {
 
   things : Thing[] = []
   structured_things : Thing[] = []
@@ -47,23 +44,7 @@ export class StructuredThingsComponent implements OnInit {
     }
 
     BrowserUniversalInit(){
-      this.FillArrayThings(this.things) 
       this.FillStructuredArrayThing(this.structured_things)
-    }
-
-    FillArrayThings(things : Thing[]) : void{
-      this.http.get(server_url+'api/things')
-      .toPromise().then(data => {
-        data['things'].forEach(thing => {
-          this.http.get(server_url+'api/things/'+thing.id)
-        .toPromise().then(data => {
-        things.push(new Thing(data['thing']))
-        });
-      });
-    }).catch(err => {
-      console.log('Error FillArray', err);
-    })
-    ;
     }
 
     AddProperty(str_things : Thing[],property:Property){
@@ -104,10 +85,15 @@ export class StructuredThingsComponent implements OnInit {
         data['things'].forEach(thing_json => {
           this.http.get(server_url+'api/things/'+thing_json.id)
         .toPromise().then(data => {
-          data['thing'].properties.forEach(prop_json=>{
-            const property = new Property(prop_json)
-            this.AddProperty(str_things,property)
-          })
+          if(data['thing'].properties.length == 0){
+            alert("No property available")
+            this.router.navigate(['/page/things'])
+          }else{
+            data['thing'].properties.forEach(prop_json=>{
+              const property = new Property(prop_json)
+              this.AddProperty(str_things,property)
+            })
+          }
         });
       });
     }).catch(err => {
