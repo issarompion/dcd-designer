@@ -37,8 +37,8 @@ export function createNgRenderMiddleware(distPath: string, ngSetup: NgSetupOptio
   app.engine('html', ngExpressEngine(ngSetup));
 
   dotenv.config({ path: findconfig('.env') })
-  //const redirectUrl = process.env.BASE_URL || '';
-  const redirectUrl = '/subject'
+  const redirectUrl = process.env.BASE_URL || '';
+  //const redirectUrl = '/subject'
   createRoutes(app,"",redirectUrl)
 
   return app;
