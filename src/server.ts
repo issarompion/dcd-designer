@@ -65,14 +65,14 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 
 // These routes use the Universal engine
 dotenv.config({ path: findconfig('.env') })
-const baseUrl = process.env.BASE_URL || '';
-createRoutes(app,baseUrl,baseUrl)
-//createRoutes(app,baseUrl,'/subject')
+const BASE_URL = process.env.BASE_URL || '';
+createRoutes(app,BASE_URL,BASE_URL)
+//createRoutes(app,BASE_URL,'/subject')
 
 
     
 
 // Start up the Node server
 app.listen(PORT, () => {
-  console.log(`Node Express server listening on http://localhost:${PORT}`);
+  console.log(`Node Express server listening on http://localhost:${PORT}${BASE_URL}`);
 });
