@@ -300,7 +300,7 @@ toString(array:any[]):string{
   }
 }
 
-multi: any[] = [/*{name: 'Red',series: [{name: new Date(2017, 0, 1, 2, 34, 17),value: 294}*/]
+multi: any[] = [{name: '',series: [{name: '',value: 0}]}]
 
 toggle(event: MatSlideToggleChange) {
   this.checked = event.checked;

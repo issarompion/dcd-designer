@@ -37,7 +37,7 @@ export class DoubleDimensionChartComponent {
      tooltipDisabled = false;
    
      // data for charts
-     multi = [];
+     multi : any = [{name: '',series: [{name: '',value: 0}]}];
 
      onResize(event) {
       this.view = [event.target.innerWidth / 1.35, 400];
@@ -76,6 +76,8 @@ export class DoubleDimensionChartComponent {
                     })
                 }
                 }
+            }else{
+              this.multi = [{name: '',series: [{name: '',value: 0}]}]
             }
           }
        }
