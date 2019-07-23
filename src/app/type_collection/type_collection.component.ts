@@ -1,17 +1,8 @@
-import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
+import { Component, Inject,PLATFORM_ID} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-
-import { Thing,Property,server_url } from '../../classes'
-
+import { Thing,Property} from '../../classes'
 import { Router} from '@angular/router';
-
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse,
-  HttpParams,
-} from "@angular/common/http";
-
+import {HttpClientService} from '../httpclient.service'
 import {isPlatformServer} from "@angular/common";
 
 @Component({
@@ -29,7 +20,7 @@ export class TypeCollectionComponent {
 
   constructor(
     private router: Router,
-    private http: HttpClient,
+    private service: HttpClientService,
     @Inject(PLATFORM_ID) private platformId: Object,
     public dialog: MatDialog
   ) {
@@ -37,7 +28,7 @@ export class TypeCollectionComponent {
 
     ngOnInit(): void {
       if (isPlatformServer(this.platformId)) {
-        console.log('Structured component server :'); // host on the server  
+        console.log('Init Type Collection component server'); // host on the server  
         } else {
          this.BrowserUniversalInit()
       }
@@ -80,11 +71,11 @@ export class TypeCollectionComponent {
     }
 
     FillStructuredArrayThing(str_things : Thing[]) : void{
-      this.http.get(server_url+'api/things')
-      .toPromise().then(data => {
+      this.service.get('api/things').subscribe(
+        data => {
         data['things'].forEach(thing_json => {
-          this.http.get(server_url+'api/things/'+thing_json.id)
-        .toPromise().then(data => {
+          this.service.get('api/things/'+thing_json.id).subscribe(
+          data => {
           if(data['thing'].properties.length == 0){
             alert("No property available")
             this.router.navigate(['/page/things'])
@@ -96,9 +87,7 @@ export class TypeCollectionComponent {
           }
         });
       });
-    }).catch(err => {
-      console.log('Error FillStructuredArray', err);
-    })
+    });
     }
 
     descriptionT(thing:Thing):string {
@@ -131,8 +120,8 @@ export class TypeCollectionComponent {
 
     delete_property(property:Property){
       if ( confirm( "Delete "+property.property_name+" ?" ) ) {
-        this.http.delete(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id)
-       .toPromise().then(data => {
+        this.service.delete('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id).subscribe(
+        data => {
          window.location.reload(); //TODO make a reload req ?
        })
      }

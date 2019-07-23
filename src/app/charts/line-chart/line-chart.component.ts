@@ -1,8 +1,6 @@
-import { Component, Inject,PLATFORM_ID,Input,ViewChild, SimpleChanges} from '@angular/core';
-
+import { Component,Input,SimpleChanges} from '@angular/core';
 import {Property,Dimension} from '../../../classes'
 
-import {isPlatformServer} from "@angular/common";
 
 @Component({
     selector: 'app-line-chart',
@@ -12,9 +10,7 @@ import {isPlatformServer} from "@angular/common";
 
 export class LineChartComponent {
 
-
     @Input() property:Property
-
     @Input() dimensions: Dimension[];
 
     showXAxis = true;
@@ -37,7 +33,7 @@ export class LineChartComponent {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
     };
 
-    constructor(@Inject(PLATFORM_ID) private platformId: Object,) {
+    constructor() {
         this.view = [innerWidth / 1.3, 400];
     }
 
@@ -45,8 +41,6 @@ export class LineChartComponent {
 
       if(!(changes.dimensions === undefined)){
         const val = changes.dimensions.currentValue
-        //const val:Dimension[] = changes.values.currentValue
-        console.log('got val: ', val);
  
         if(val.length>0){
                 this.multi =  []

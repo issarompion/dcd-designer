@@ -25,6 +25,7 @@ import {TimeCollectionComponent} from './time_collection/time_collection.compone
 //Http
 import {HttpClientModule} from '@angular/common/http';
 import {TransferHttpCacheModule} from '@nguniversal/common';
+import {HttpClientService} from './httpclient.service'
 
 // MatUI
 import {MatButtonModule} from '@angular/material/button';
@@ -117,7 +118,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    HttpClientService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

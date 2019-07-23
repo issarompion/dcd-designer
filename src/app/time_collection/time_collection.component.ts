@@ -1,21 +1,8 @@
-import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-import { Thing,Property,PropertyType,server_url } from '../../classes'
-
+import { Component, Inject,PLATFORM_ID} from '@angular/core';
+import { Thing,Property} from '../../classes'
 import { Router} from '@angular/router';
-
-
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse,
-  HttpParams,
-} from "@angular/common/http";
-
+import {HttpClientService} from '../httpclient.service'
 import {isPlatformServer} from "@angular/common";
-import { stringify } from '@angular/compiler/src/util';
-
 import { DatePipe } from '@angular/common'
 
 @Component({
@@ -48,15 +35,14 @@ export class TimeCollectionComponent {
     constructor(
       public datepipe: DatePipe,
       private router: Router,
-      private http: HttpClient,
-      @Inject(PLATFORM_ID) private platformId: Object,
-      public dialog: MatDialog
+      private service: HttpClientService,
+      @Inject(PLATFORM_ID) private platformId: Object
     ) {
       }
   
       ngOnInit(): void {
         if (isPlatformServer(this.platformId)) {
-          console.log('Structured component server :'); // host on the server  
+          console.log('Init TimeCollection component server :')
           } else {
            this.BrowserUniversalInit()
         }
@@ -67,23 +53,19 @@ export class TimeCollectionComponent {
       }
   
       FillArrayThings(things : Thing[]) : void{
-        this.http.get(server_url+'api/things')
-        .toPromise().then(data1 => {
+        this.service.get('api/things').subscribe(
+          data1 => {
           data1['things'].forEach((thing,index) => {
-            this.http.get(server_url+'api/things/'+thing.id)
-          .toPromise().then(data2 => {
-          things.push(new Thing(data2['thing']))
+            this.service.get('api/things/'+thing.id).subscribe(
+              data2 => {
+              things.push(new Thing(data2['thing']))
   
-          if(index == data1['things'].length-1){
-            this.FillDataCollectionArrayThing(3600000)
-          }
-  
+              if(index == data1['things'].length-1){
+                this.FillDataCollectionArrayThing(3600000)
+              }
           });
         });
-      }).catch(err => {
-        console.log('Error FillArray', err);
-      })
-      ;
+      });
       }
   
       FillDataCollectionArrayThing(time_s:number){
@@ -92,20 +74,17 @@ export class TimeCollectionComponent {
        const to : number = (new Date).getTime();
        const from : number = 0
   
-       console.log('thisthing',this.things)
         var index_things = 0
       this.things.forEach((thing)=>{
           index_things ++
           var index_property = 0
          thing.thing_properties.forEach((property)=>{
            index_property ++
-          this.http.get(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to)
-          .toPromise().then(data => {
+          this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+            data => {
               this.AddRangeDate(data['property'].values,time_s)
               .then(()=>{
-                console.log(index_property)
                 if(index_things == this.things.length  && index_property == thing.thing_properties.length){
-                  //console.log('rangedat',this.rangesDates)
                   this.AddThing(this.rangesDates)
                 }
               })
@@ -131,11 +110,9 @@ export class TimeCollectionComponent {
   
           this.things.forEach((thing)=>{
             thing.thing_properties.forEach((property)=>{
-             this.http.get(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to)
-             .toPromise().then(data => {
+             this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+              data => {
               if(data['property'].values.length > 0){
-                /*const new_property = new Property(data['property'])
-                new_property.property_entitiy_id =thing.thing_id*/
                 property.property_values = data['property'].values
                 this.updatething(new_thing.thing_name,property)
                 }
@@ -169,7 +146,6 @@ export class TimeCollectionComponent {
         if(values.length>0){
           values.forEach(value=>{
             const ts = value[0]
-            //console.log('ts',ts)
             if(this.rangesDates.length > 0){
               var indexToChange = -1
               for (var i = 0; i <= this.rangesDates.length; i ++) {
@@ -177,39 +153,33 @@ export class TimeCollectionComponent {
                     const range = this.rangesDates[i]
                     if(ts > range[0] && ts < range[1]){
                       //on fait rien et break le for each
-                      //console.log('ts > range[0] && ts < range[1]')
                       break;
                     }else{
                       if(ts<range[0]){
                         if(ts > range[0]-time_s){
                           // remplacer le premier date du range par celle la et break
-                          //console.log('ts > range[0]-time_ms')
                           this.rangesDates[i][0] = ts
                           break;
                         }else{
                           // creer une nouvelle range avec cette date en premier et une heure après pour le 2e
                           // sauvegarder l'index
-                          //console.log('< range [0]','indexToChange ='+i)
                           indexToChange = i
                         }
                       }
                       if(ts>range[1]){
                         if( ts < range[1]+time_s){
                           // remplacer la dernier data du range par celle la et break
-                          //console.log('ts < range[1]+time_ms')
                           this.rangesDates[i][1] = ts
                           break;
                         }else{
                           // creer une nouvelle range avec cette date en premier et une heure après
                           //sauvegarder l'index
-                          //console.log('> range [1]','indexToChange ='+i)
                           indexToChange = i
                         }
                       }
                     } 
                 }else{
                     if(indexToChange!=-1){
-                      //console.log('push', [ts,ts+time_ms])
                       this.rangesDates.push([ts,ts+time_s])
                       break;
                     }
@@ -226,7 +196,6 @@ export class TimeCollectionComponent {
       }
   
       changePrecision(event){
-        console.log("changePrecision",this.time_ms,event.value)
         this.FillDataCollectionArrayThing(this.time_ms)
       }
   
@@ -261,19 +230,15 @@ export class TimeCollectionComponent {
   
       delete_property(property:Property){
         if ( confirm( "Delete "+property.property_name+" ?" ) ) {
-          this.http.delete(server_url+'api/things/'+property.property_entitiy_id+'/properties/'+property.property_id)
-         .toPromise().then(data => {
+          this.service.delete('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id).subscribe(
+          data => {
            window.location.reload(); //TODO make a reload req ?
          })
        }
       }
   
       nav_thing(thing:Thing){
-        //console.log(thing.thing_description.split("-")[0])
-        //console.log(thing.thing_description.split("-")[1])
-        //const range = [parseInt(thing.thing_description)]
         const range = this.getRangeTime(thing)
-        console.log(range)
         this.router.navigate(['/page/thing'], {
           state:{
             data:thing.json(),
