@@ -70,21 +70,16 @@ export class TypeCollectionComponent {
       }
     }
 
-    FillStructuredArrayThing(str_things : Thing[]) : void{
+    FillStructuredArrayThing(str_things : Thing[]) {
       this.service.get('api/things').subscribe(
-        data => {
-        data['things'].forEach(thing_json => {
+        data1 => {
+        data1['things'].forEach((thing_json,index) => {
           this.service.get('api/things/'+thing_json.id).subscribe(
-          data => {
-          if(data['thing'].properties.length == 0){
-            alert("No property available")
-            this.router.navigate(['/page/things'])
-          }else{
-            data['thing'].properties.forEach(prop_json=>{
+          data2 => {
+            data2['thing'].properties.forEach(prop_json=>{
               const property = new Property(prop_json)
               this.AddProperty(str_things,property)
             })
-          }
         });
       });
     });
