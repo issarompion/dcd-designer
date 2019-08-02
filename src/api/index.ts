@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser'
 import * as session from 'express-session'
 import * as refresh from 'passport-oauth2-refresh'
 import * as passport from 'passport'
-import {Strategy,ThingService,PersonService,PropertyService} from 'dcd-sdk-js'
+import {Strategy,ThingService,PersonService,PropertyService} from '@datacentricdesign/sdk-js'
 import * as dotenv from 'dotenv'
 import * as findconfig from 'find-config'
 import * as cors from 'cors'
@@ -37,8 +37,8 @@ export function createNgRenderMiddleware(distPath: string, ngSetup: NgSetupOptio
   app.engine('html', ngExpressEngine(ngSetup));
 
   dotenv.config({ path: findconfig('.env') })
-  const redirectUrl = process.env.BASE_URL || '';
-  //const redirectUrl = '/subject'
+  //const redirectUrl = process.env.BASE_URL || '';
+  const redirectUrl = '/subject'
   createRoutes(app,"",redirectUrl)
 
   return app;
