@@ -2,10 +2,12 @@
 .DS_Store
 .vscode
 
+package-lock.json
+
 # Built #
 /__build__/
 /__server_build__/
-/node_modules/
+/**/node_modules/
 /typings/
 /tsd_typings/
 /dist/
@@ -27,4 +29,3 @@ webpack.records.json
 *.shim.ngstyle.ts
 
 *.env
-
