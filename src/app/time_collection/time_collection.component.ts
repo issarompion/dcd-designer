@@ -78,13 +78,13 @@ export class TimeCollectionComponent {
       this.things.forEach((thing)=>{
           index_things ++
           var index_property = 0
-         thing.thing_properties.forEach((property)=>{
+         thing.properties.forEach((property)=>{
            index_property ++
-          this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+          this.service.get('api/things/'+property.entitiy_id+'/properties/'+property.id+'?from='+from+'&to='+to).subscribe(
             data => {
               this.AddRangeDate(data['property'].values,time_s)
               .then(()=>{
-                if(index_things == this.things.length  && index_property == thing.thing_properties.length){
+                if(index_things == this.things.length  && index_property == thing.properties.length){
                   this.AddThing(this.rangesDates)
                 }
               })
@@ -109,12 +109,12 @@ export class TimeCollectionComponent {
           this.data_collection_things.push(new_thing)
   
           this.things.forEach((thing)=>{
-            thing.thing_properties.forEach((property)=>{
-             this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+            thing.properties.forEach((property)=>{
+             this.service.get('api/things/'+property.entitiy_id+'/properties/'+property.id+'?from='+from+'&to='+to).subscribe(
               data => {
               if(data['property'].values.length > 0){
-                property.property_values = data['property'].values
-                this.updatething(new_thing.thing_name,property)
+                property.values = data['property'].values
+                this.updatething(new_thing.name,property)
                 }
              })
             })
@@ -124,7 +124,7 @@ export class TimeCollectionComponent {
   
       updatething(thing_name:string,property:Property){
         this.data_collection_things.forEach(thing=>{
-          if(thing.thing_name == thing_name){
+          if(thing.name == thing_name){
             thing.update_properties([property])
           }
         })
@@ -133,7 +133,7 @@ export class TimeCollectionComponent {
       contains(property_id:string,thing_properties:Property[]):boolean{
         for (var i = 0; i <= thing_properties.length; i ++) {
             if(i < thing_properties.length){
-                if(property_id == thing_properties[i].property_id){
+                if(property_id == thing_properties[i].id){
                     return true
                 }
             }else{
@@ -201,22 +201,22 @@ export class TimeCollectionComponent {
   
   
       descriptionT(thing:Thing):string {
-        if(thing.thing_description == "" || thing.thing_description === undefined){
+        if(thing.description == "" || thing.description === undefined){
           return 'No description available'
         }else{
-          return thing.thing_description
+          return thing.description
         }
       }
       descriptionP(property:Property):string {
-        if(property.property_description == "" || property.property_description === undefined ){
+        if(property.description == "" || property.description === undefined ){
           return 'No description available'
         }else{
-          return property.property_description 
+          return property.description 
         }
       }
   
       HasProperty(thing:Thing):boolean{
-        return thing.thing_properties.length > 0
+        return thing.properties.length > 0
       }
   
       async setChild(thing:Thing,property : Property){
@@ -229,8 +229,8 @@ export class TimeCollectionComponent {
       }
   
       delete_property(property:Property){
-        if ( confirm( "Delete "+property.property_name+" ?" ) ) {
-          this.service.delete('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id).subscribe(
+        if ( confirm( "Delete "+property.name+" ?" ) ) {
+          this.service.delete('api/things/'+property.entitiy_id+'/properties/'+property.id).subscribe(
           data => {
            window.location.reload(); //TODO make a reload req ?
          })
@@ -248,7 +248,7 @@ export class TimeCollectionComponent {
       }
   
       getRangeTime(thing:Thing):number[]{
-        return [parseInt(thing.thing_description.split("-")[0],10),parseInt(thing.thing_description.split("-")[1],10)]
+        return [parseInt(thing.description.split("-")[0],10),parseInt(thing.description.split("-")[1],10)]
       }
       
     }

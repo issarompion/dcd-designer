@@ -51,35 +51,35 @@ export class Person {
 
 export class Property {
     //proprety_entity: Thing
-    property_id: string;
-    property_name: string;
-    property_description: string;
-    property_type: string;
-    property_dimensions: any[] = [];
-    property_values: any[] = [];
-    property_entitiy_id:string;
+    id: string;
+    name: string;
+    description: string;
+    type: string;
+    dimensions: any[] = [];
+    values: any[] = [];
+    entitiy_id:string;
 
 
     constructor(params : {}) {
             //this.proprety_entity = params['entity']
-            this.property_id = params['id']
-            this.property_name = params['name']
-            this.property_description = params['description']
-            this.property_type = params['type'];
-            this.property_dimensions = params['dimensions'];
-            this.property_values = params['values'];
-            this.property_entitiy_id = params ['entityId']
+            this.id = params['id']
+            this.name = params['name']
+            this.description = params['description']
+            this.type = params['type'];
+            this.dimensions = params['dimensions'];
+            this.values = params['values'];
+            this.entitiy_id = params ['entityId']
     }
 
     json(){
         return {
-            id : this.property_id,
-            name : this.property_name,
-            type : this.property_type,
-            description: this.property_description,
-            dimensions: this.property_dimensions,
-            values : this.property_values,
-            entityId : this.property_entitiy_id
+            id : this.id,
+            name : this.name,
+            type : this.type,
+            description: this.description,
+            dimensions: this.dimensions,
+            values : this.values,
+            entityId : this.entitiy_id
         }
     }
 
@@ -122,30 +122,30 @@ export enum PropertyType{
 
 
 export class Thing {
-    thing_id: string;
-    thing_token: string;
-    thing_name: string;
-    thing_description: string;
-    thing_type: string
-    thing_properties: Property[] = [];
+    id: string;
+    token: string;
+    name: string;
+    description: string;
+    type: string
+    properties: Property[] = [];
    
    constructor(params : {}) {
        if(params === undefined){
            throw new TypeError('Thing : constructor param is undefined')
        }else{
-       this.thing_id = params['id']
-       this.thing_token = params['token']
-       this.thing_name = params['name']
-       this.thing_description = params['description']
-       this.thing_type = params['type']
+       this.id = params['id']
+       this.token = params['token']
+       this.name = params['name']
+       this.description = params['description']
+       this.type = params['type']
        
        if(params['properties'] instanceof Array){
         params['properties'].forEach(property => {
             if(property instanceof Property){
-                this.thing_properties.push(property)
+                this.properties.push(property)
             }else{
                 if(property.constructor === {}.constructor){
-                    this.thing_properties.push(new Property({
+                    this.properties.push(new Property({
                         entity : this, 
                         id : property['id'],
                         name : property['name'],
@@ -165,10 +165,10 @@ export class Thing {
 
    json():{}{
        return {
-       id : this.thing_id,
-       name : this.thing_name,
-       type : this.thing_type,
-       description: this.thing_description,
+       id : this.id,
+       name : this.name,
+       type : this.type,
+       description: this.description,
        properties : this.properties_to_array()
        }
    }
@@ -177,9 +177,9 @@ export class Thing {
 
    private properties_to_array():Array<any>{
        var res = []
-       for (var i = 0; i <= this.thing_properties.length; i ++) {
-           if(i < this.thing_properties.length){
-               const property = this.thing_properties[i]
+       for (var i = 0; i <= this.properties.length; i ++) {
+           if(i < this.properties.length){
+               const property = this.properties[i]
                res.push(property.json())
            }else{
                return res
@@ -189,18 +189,18 @@ export class Thing {
 
    update_properties(properties:Array<Property>){
     properties.forEach(property => {
-                if(!this.contains(property.property_id)){
-                    this.thing_properties.push(property)
+                if(!this.contains(property.id)){
+                    this.properties.push(property)
                 }else{
-                    console.log(property.property_id,'already there')
+                    console.log(property.id,'already there')
                 }
     })
 }
 
 private contains(property_id:string):boolean{
-    for (var i = 0; i <= this.thing_properties.length; i ++) {
-        if(i < this.thing_properties.length){
-            if(property_id == this.thing_properties[i].property_id){
+    for (var i = 0; i <= this.properties.length; i ++) {
+        if(i < this.properties.length){
+            if(property_id == this.properties[i].id){
                 return true
             }
         }else{

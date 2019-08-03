@@ -5,7 +5,7 @@
                     <div class="card-header card-header-primary">
                         <div class = "thing_header">
                                                         <div class = "thing_title">
-                                                        <h4 class="card-title">{{thing.thing_name}}</h4>
+                                                        <h4 class="card-title">{{thing.name}}</h4>
                                                         </div>
                                                         <div class = "thing_nav">
                                                                  <button mat-icon-button color="grey" (click)="nav_thing(thing)"  >
@@ -25,9 +25,9 @@
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <tr *ngFor="let property of thing.thing_properties; index as i" >
-                                                                        <td>{{property.property_name}}</td>
-                                                                        <td>{{property.property_id}}</td> 
+                                                                <tr *ngFor="let property of thing.properties; index as i" >
+                                                                        <td>{{property.name}}</td>
+                                                                        <td>{{property.id}}</td> 
                                                                         <td>
                                                                         <button mat-icon-button color = "primary" (click)="showDialog_property(property)"  >
                                                                                 <i class="fas fa-clone" ></i>
@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<p-dialog [(header)]="property_picked.property_name" [(visible)]="display_property" [modal]="true" [responsive]="true" [style]="{width: '60%', minWidth: '700px'}" 
+<p-dialog [(header)]="property_picked.name" [(visible)]="display_property" [modal]="true" [responsive]="true" [style]="{width: '60%', minWidth: '700px'}" 
 [maximizable]="true" [baseZIndex]="10000">
 
 <div>

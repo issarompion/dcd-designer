@@ -58,23 +58,23 @@ export class ThingsComponent implements OnInit {
     }
 
     descriptionT(thing:Thing):string {
-      if(thing.thing_description == "" || thing.thing_description === undefined){
+      if(thing.description == "" || thing.description === undefined){
         return 'No description available'
       }else{
-        return thing.thing_description
+        return thing.description
       }
     }
 
     descriptionP(property:Property):string {
-      if(property.property_description == "" || property.property_description === undefined ){
+      if(property.description == "" || property.description === undefined ){
         return 'No description available'
       }else{
-        return property.property_description 
+        return property.description 
       }
     }
 
     HasProperty(thing:Thing):boolean{
-      return thing.thing_properties.length > 0
+      return thing.properties.length > 0
     }
 
     async setChild(property : Property){
@@ -87,8 +87,8 @@ export class ThingsComponent implements OnInit {
     }
 
     delete_thing(thing:Thing){
-      if ( confirm( "Delete " + thing.thing_name +" ?" ) ) {
-       this.service.delete('api/things/'+thing.thing_id).subscribe(
+      if ( confirm( "Delete " + thing.name +" ?" ) ) {
+       this.service.delete('api/things/'+thing.id).subscribe(
        data => {
          window.location.reload(); //TODO make a reload req ?
        })
@@ -96,8 +96,8 @@ export class ThingsComponent implements OnInit {
     }
 
     delete_property(property:Property){
-      if ( confirm( "Delete "+property.property_name+" ?" ) ) {
-        this.service.delete('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id).subscribe(
+      if ( confirm( "Delete "+property.name+" ?" ) ) {
+        this.service.delete('api/things/'+property.entitiy_id+'/properties/'+property.id).subscribe(
         data => {
          window.location.reload(); //TODO make a reload req ?
        })
@@ -164,7 +164,7 @@ export class ThingsComponent implements OnInit {
     }
 
     add_property(property:Property){
-      this.service.post('api/things/'+this.add_property_thing.thing_id+'/properties',property.json()).subscribe(
+      this.service.post('api/things/'+this.add_property_thing.id+'/properties',property.json()).subscribe(
         data => {
         this.add_property_to_things(data['property'].entityId,new Property(data['property']))
       })
@@ -172,8 +172,8 @@ export class ThingsComponent implements OnInit {
 
     add_property_to_things(thing_id:string,property:Property){
       this.things.forEach(t => {
-        if(thing_id == t.thing_id){
-          t.thing_properties.push(property)
+        if(thing_id == t.id){
+          t.properties.push(property)
         }
     })
     }
@@ -224,7 +224,7 @@ export class DialogAddThing {
 @Component({
   selector: 'dialog-add-property',
   template: `
-  <h1 mat-dialog-title>Add Property to {{data.thing.thing_name}}</h1>
+  <h1 mat-dialog-title>Add Property to {{data.thing.name}}</h1>
 <div mat-dialog-content>
   <mat-form-field>
     <input matInput [(ngModel)]="data.name" placeholder="Name">
@@ -271,7 +271,7 @@ export class DialogAddProperty {
 @Component({
   selector: 'dialog-add-jwt',
   template: `
-  <h1 mat-dialog-title>{{data.thing.thing_name}} ({{data.thing.thing_id}})</h1>
+  <h1 mat-dialog-title>{{data.thing.name}} ({{data.thing.id}})</h1>
   <div mat-dialog-content>
   <mat-form-field>
     <input matInput placeholder="JWT" type="text"[value]="data.jwt"  #inputTarget readonly>

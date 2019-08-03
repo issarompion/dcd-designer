@@ -39,17 +39,17 @@ export class TypeCollectionComponent {
     }
 
     AddProperty(str_things : Thing[],property:Property){
-      if(this.contains(str_things,property.property_type)){
+      if(this.contains(str_things,property.type)){
         str_things.forEach(str_thing => {
-          if (str_thing.thing_name == property.property_type){
-            str_thing.thing_properties.push(property)
+          if (str_thing.name == property.type){
+            str_thing.properties.push(property)
           }
       })
       }else{
         const new_thing = new Thing({
-          name : property.property_type,
-          type : property.property_type,
-          description : property.property_type,
+          name : property.type,
+          type : property.type,
+          description : property.type,
           properties : [property]
         })
         //new_thing.thing_properties.push(property)
@@ -61,7 +61,7 @@ export class TypeCollectionComponent {
     contains(str_things : Thing[],thing_name_or_property_type:string):boolean{
       for (var i = 0; i <= str_things.length; i ++) {
         if(i < str_things.length){
-            if(thing_name_or_property_type == str_things[i].thing_name){
+            if(thing_name_or_property_type == str_things[i].name){
                 return true
             }
         }else{
@@ -86,22 +86,22 @@ export class TypeCollectionComponent {
     }
 
     descriptionT(thing:Thing):string {
-      if(thing.thing_description == "" || thing.thing_description === undefined){
+      if(thing.description == "" || thing.description === undefined){
         return 'No description available'
       }else{
-        return thing.thing_description
+        return thing.description
       }
     }
     descriptionP(property:Property):string {
-      if(property.property_description == "" || property.property_description === undefined ){
+      if(property.description == "" || property.description === undefined ){
         return 'No description available'
       }else{
-        return property.property_description 
+        return property.description 
       }
     }
 
     HasProperty(thing:Thing):boolean{
-      return thing.thing_properties.length > 0
+      return thing.properties.length > 0
     }
 
     async setChild(property : Property){
@@ -114,8 +114,8 @@ export class TypeCollectionComponent {
     }
 
     delete_property(property:Property){
-      if ( confirm( "Delete "+property.property_name+" ?" ) ) {
-        this.service.delete('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id).subscribe(
+      if ( confirm( "Delete "+property.name+" ?" ) ) {
+        this.service.delete('api/things/'+property.entitiy_id+'/properties/'+property.id).subscribe(
         data => {
          window.location.reload(); //TODO make a reload req ?
        })

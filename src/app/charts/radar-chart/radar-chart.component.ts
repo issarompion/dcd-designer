@@ -45,7 +45,7 @@ export class RadarChartComponent {
 
                 if(i == val.length){
                     this.radarChartOptions = {responsive: true,scale: {ticks: {beginAtZero: true,min: 0,max: maxnum+1,stepSize: 1},}}
-                    this.radarChartData = [{data:last_data,label:this.property.property_type}]
+                    this.radarChartData = [{data:last_data,label:this.property.type}]
                   }else{
                     const value = val[i]
                     const num =  value.data[this.index].value
@@ -60,7 +60,7 @@ export class RadarChartComponent {
 
             }else{
               this.showData = false
-              this.radarChartData = [{data:[],label:this.property.property_type}]
+              this.radarChartData = [{data:[],label:this.property.type}]
             }
         }
       }

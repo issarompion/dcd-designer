@@ -68,7 +68,7 @@ export class GoogleMapsComponent {
                     lng: last_lng,
                     icon: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
                     infoWindowOptions: {
-                    content: this.property.property_entitiy_id +' '+val[0].data[this.index].name
+                    content: this.property.entitiy_id +' '+val[0].data[this.index].name
                     }
                 }
                 ],
@@ -115,7 +115,7 @@ export class GoogleMapsComponent {
                         lng: val[1].data[i].value,
                         icon: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
                         infoWindowOptions: {
-                        content: this.property.property_entitiy_id +' '+val[0].data[i].name
+                        content: this.property.entitiy_id +' '+val[0].data[i].name
                         }
                     })
                   }

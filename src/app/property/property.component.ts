@@ -44,7 +44,7 @@ export class PropertyComponent implements OnInit {
      }
  
      BrowserUniversalInit(from:number,to:number){
-              this.service.get('api/things/'+this.ChildProperty.property_entitiy_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to).subscribe(
+              this.service.get('api/things/'+this.ChildProperty.entitiy_id+'/properties/'+this.ChildProperty.id+'?from='+from+'&to='+to).subscribe(
               data => {
               if(data['property'].values.length > 0){
               const first_date = new Date(data['property'].values[0][0])
@@ -53,12 +53,12 @@ export class PropertyComponent implements OnInit {
               }
               this.values = data['property'].values
               for(var i = 0; i < this.getDimensionSize(this.ChildProperty); i++){
-              const dim_name =  this.ChildProperty.property_dimensions[i].name
-              const dim_unit = this.ChildProperty.property_dimensions[i].unit
+              const dim_name =  this.ChildProperty.dimensions[i].name
+              const dim_unit = this.ChildProperty.dimensions[i].unit
               const index = i
               this.dimensions.push(new Dimension(
-                this.ChildProperty.property_id,
-                this.ChildProperty.property_name,
+                this.ChildProperty.id,
+                this.ChildProperty.name,
                 dim_name,
                 dim_unit,
                 this.getData(index,data['property'].values)
@@ -66,7 +66,7 @@ export class PropertyComponent implements OnInit {
               }
             
              
-             switch(this.ChildProperty.property_type) {
+             switch(this.ChildProperty.type) {
                  case "LOCATION": {
                   this.service.get('mapsKey').subscribe(
                   data => {
@@ -132,17 +132,17 @@ export class PropertyComponent implements OnInit {
         if(rangeDates[0] !== null && rangeDates[1]!== null){
             const from : number = rangeDates[0].getTime(); 
             const to : number = rangeDates[1].getTime() + 24*60*60*1000 ; 
-             this.service.get('api/things/'+this.ChildProperty.property_entitiy_id+'/properties/'+this.ChildProperty.property_id+'?from='+from+'&to='+to).subscribe(
+             this.service.get('api/things/'+this.ChildProperty.entitiy_id+'/properties/'+this.ChildProperty.id+'?from='+from+'&to='+to).subscribe(
               data => {
               this.dimensions=[]
               this.values = data['property'].values
               for(var i = 0; i < this.getDimensionSize(this.ChildProperty); i++){
-                const dim_name =  this.ChildProperty.property_dimensions[i].name
-                const dim_unit = this.ChildProperty.property_dimensions[i].unit
+                const dim_name =  this.ChildProperty.dimensions[i].name
+                const dim_unit = this.ChildProperty.dimensions[i].unit
                 const index = i
                 this.dimensions.push(new Dimension(
-                  this.ChildProperty.property_id,
-                  this.ChildProperty.property_name,
+                  this.ChildProperty.id,
+                  this.ChildProperty.name,
                   dim_name,
                   dim_unit,
                   this.getData(index,data['property'].values)
@@ -156,12 +156,12 @@ export class PropertyComponent implements OnInit {
 
       getDimensionSize(property:Property):number{
         var array :  string[] = []
-        for(var i = 0; i <= property.property_dimensions.length; i++){
-          if(i == property.property_dimensions.length){
+        for(var i = 0; i <= property.dimensions.length; i++){
+          if(i == property.dimensions.length){
             return array.length
           }else{
-            if(!array.includes(property.property_dimensions[i].name)){
-              array.push(property.property_dimensions[i].name)
+            if(!array.includes(property.dimensions[i].name)){
+              array.push(property.dimensions[i].name)
             }
           }
         }

@@ -60,18 +60,18 @@ export class ThingComponent implements OnInit {
         }
     }
     BrowserUniversalInit(from:number,to:number) {
-        for (let property of this.thing.thing_properties) {
+        for (let property of this.thing.properties) {
               for(var i = 0; i < this.getDimensionSize(property); i++){
-              const dim_name =  property.property_dimensions[i].name
-              const dim_unit = property.property_dimensions[i].unit
+              const dim_name =  property.dimensions[i].name
+              const dim_unit = property.dimensions[i].unit
               const index = i
 
-              this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+              this.service.get('api/things/'+property.entitiy_id+'/properties/'+property.id+'?from='+from+'&to='+to).subscribe(
                 data => {
                 if(data['property'].values.length > 0){
                 this.dimensions.push(new Dimension(
-                  property.property_id,
-                  property.property_name,
+                  property.id,
+                  property.name,
                   dim_name,
                   dim_unit,
                   this.getData(index,data['property'].values)
@@ -116,12 +116,12 @@ export class ThingComponent implements OnInit {
 
     getDimensionSize(property:Property):number{
       var array :  string[] = []
-      for(var i = 0; i <= property.property_dimensions.length; i++){
-        if(i == property.property_dimensions.length){
+      for(var i = 0; i <= property.dimensions.length; i++){
+        if(i == property.dimensions.length){
           return array.length
         }else{
-          if(!array.includes(property.property_dimensions[i].name)){
-            array.push(property.property_dimensions[i].name)
+          if(!array.includes(property.dimensions[i].name)){
+            array.push(property.dimensions[i].name)
           }
         }
       }
@@ -136,18 +136,18 @@ export class ThingComponent implements OnInit {
             const from : number = rangeDates[0].getTime(); 
             const to : number = rangeDates[1].getTime() + 24*60*60*1000 ; 
 
-            for (let property of this.thing.thing_properties) {
+            for (let property of this.thing.properties) {
               for(var i = 0; i < this.getDimensionSize(property); i++){
-              const dim_name =  property.property_dimensions[i].name
-              const dim_unit = property.property_dimensions[i].unit
+              const dim_name =  property.dimensions[i].name
+              const dim_unit = property.dimensions[i].unit
               const index = i
 
-              this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+              this.service.get('api/things/'+property.entitiy_id+'/properties/'+property.id+'?from='+from+'&to='+to).subscribe(
                 data => {
                 if(data['property'].values.length > 0){
                 this.dimensions.push(new Dimension(
-                  property.property_id,
-                  property.property_name,
+                  property.id,
+                  property.name,
                   dim_name,
                   dim_unit,
                   this.getData(index,data['property'].values)
@@ -168,14 +168,14 @@ export class ThingComponent implements OnInit {
             const from : number = rangeDates[0].getTime(); 
             const to : number = rangeDates[1].getTime() + 24*60*60*1000 ; 
 
-            for (let property of this.thing.thing_properties) {
+            for (let property of this.thing.properties) {
               for(var i = 0; i < this.getDimensionSize(property); i++){
               const index = i
-              const dim_name =  property.property_dimensions[i].name
+              const dim_name =  property.dimensions[i].name
 
-              this.service.get('api/things/'+property.property_entitiy_id+'/properties/'+property.property_id+'?from='+from+'&to='+to).subscribe(
+              this.service.get('api/things/'+property.entitiy_id+'/properties/'+property.id+'?from='+from+'&to='+to).subscribe(
                 data => {
-                this.updateDimension(property.property_id,dim_name,this.getData(index,data['property'].values))
+                this.updateDimension(property.id,dim_name,this.getData(index,data['property'].values))
               })
               
               }
