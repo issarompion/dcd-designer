@@ -2,13 +2,14 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/dcd-ui-angular",
   "lib": {
-    "entryFile": "src/public-api.ts"
+    "entryFile": "src/public-api.ts",
+    "umdModuleIds": {
+    }
   },
   "whitelistedNonPeerDependencies": [
-    "@angular/animations",
-    "@angular/forms",
-    "@angular/platform-browser",
     "primeicons",
-    "primeng"
+    "primeng",
+    "chart.js",
+    "ng2-charts"
   ]
 }

@@ -22,16 +22,11 @@ export class HomeComponent implements OnInit {
     }
 }
 
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
-    @Optional() @Inject('serverUrl') protected serverUrl: string,
-    @Optional() @Inject('token') protected token: string,
-  ) {
-    }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object,) {}
 
     ngOnInit(): void {
       if (isPlatformServer(this.platformId)) {
-        console.log('Init Home component server', 'token : ' + this.token, 'serverUrl : '+this.serverUrl); // host on the server  
+        console.log('Init Home component server'); // host on the server  
         } else {
          this.BrowserUniversalInit()
       }
