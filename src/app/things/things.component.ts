@@ -1,4 +1,4 @@
-import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
+import { Component, Inject,PLATFORM_ID,Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Thing,Property,PropertyType} from '../../classes'
 import { Router} from '@angular/router';
@@ -12,7 +12,7 @@ import {isPlatformServer} from "@angular/common";
 })
 export class ThingsComponent implements OnInit {
 
-  things : Thing[] = []
+  @Input() things : Thing[]
   displayedColumns: string[] = ['name', 'type', 'settings'];
   //Dialog property
   display_property: boolean = false;
@@ -31,25 +31,16 @@ export class ThingsComponent implements OnInit {
       if (isPlatformServer(this.platformId)) {
         console.log('Init Things component server'); 
         } else {
-         this.BrowserUniversalInit()
+        if(this.things === undefined) {
+          console.error('Init Things component browser : ','Input things is undefined')
+        }else{
+            this.BrowserUniversalInit()
+        }
       }
     }
 
     BrowserUniversalInit(){
-      this.FillArrayThings(this.things) 
-    }
-
-    FillArrayThings(things : Thing[]) : void{
-      this.service.get('api/things').subscribe(
-        data => {
-        data['things'].forEach(thing => {
-          this.service.get('api/things/'+thing.id).subscribe(
-        data => {
-        things.push(new Thing(data['thing']))
-        });
-      });
-    })
-    ;
+      console.log('Init Things component browser')
     }
 
     sort_things_by_properties(things : Thing[]) : Thing[] {
@@ -97,7 +88,7 @@ export class ThingsComponent implements OnInit {
 
     delete_property(property:Property){
       if ( confirm( "Delete "+property.name+" ?" ) ) {
-        this.service.delete('api/things/'+property.entitiy_id+'/properties/'+property.id).subscribe(
+        this.service.delete('api/things/'+property.entity_id+'/properties/'+property.id).subscribe(
         data => {
          window.location.reload(); //TODO make a reload req ?
        })

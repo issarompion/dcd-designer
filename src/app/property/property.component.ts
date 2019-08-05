@@ -17,7 +17,6 @@ export class PropertyComponent implements OnInit {
 
     chart_type : string;
     values : any[] = []
-    dimensions : Dimension[] = []
     rangeDates: Date[]
     apiKey:string = ''
     checked:boolean = false
@@ -43,8 +42,9 @@ export class PropertyComponent implements OnInit {
            }
      }
  
+     
      BrowserUniversalInit(from:number,to:number){
-              this.service.get('api/things/'+this.ChildProperty.entitiy_id+'/properties/'+this.ChildProperty.id+'?from='+from+'&to='+to).subscribe(
+              this.service.get('api/things/'+this.ChildProperty.entity_id+'/properties/'+this.ChildProperty.id+'?from='+from+'&to='+to).subscribe(
               data => {
               if(data['property'].values.length > 0){
               const first_date = new Date(data['property'].values[0][0])
@@ -52,20 +52,7 @@ export class PropertyComponent implements OnInit {
               this.rangeDates = [first_date,last_date]
               }
               this.values = data['property'].values
-              for(var i = 0; i < this.getDimensionSize(this.ChildProperty); i++){
-              const dim_name =  this.ChildProperty.dimensions[i].name
-              const dim_unit = this.ChildProperty.dimensions[i].unit
-              const index = i
-              this.dimensions.push(new Dimension(
-                this.ChildProperty.id,
-                this.ChildProperty.name,
-                dim_name,
-                dim_unit,
-                this.getData(index,data['property'].values)
-                ))
-              }
-            
-             
+
              switch(this.ChildProperty.type) {
                  case "LOCATION": {
                   this.service.get('mapsKey').subscribe(
@@ -108,23 +95,6 @@ export class PropertyComponent implements OnInit {
       
               }
              })
-        }
- 
-
-    getData(index,values:any[]): {value:number,name:Date}[]{
-      var array :  {value:number,name:Date}[] = []
-      for(var i = 0; i <= values.length; i++){
-        if(i == values.length){
-          return array
-        }else{
-            array.push(
-              {
-                value: values[i][index+1],
-                name: new Date(values[i][0])
-              }
-            )
-        }
-      }
     }
 
     getValues(rangeDates){
@@ -132,40 +102,13 @@ export class PropertyComponent implements OnInit {
         if(rangeDates[0] !== null && rangeDates[1]!== null){
             const from : number = rangeDates[0].getTime(); 
             const to : number = rangeDates[1].getTime() + 24*60*60*1000 ; 
-             this.service.get('api/things/'+this.ChildProperty.entitiy_id+'/properties/'+this.ChildProperty.id+'?from='+from+'&to='+to).subscribe(
+             this.service.get('api/things/'+this.ChildProperty.entity_id+'/properties/'+this.ChildProperty.id+'?from='+from+'&to='+to).subscribe(
               data => {
-              this.dimensions=[]
               this.values = data['property'].values
-              for(var i = 0; i < this.getDimensionSize(this.ChildProperty); i++){
-                const dim_name =  this.ChildProperty.dimensions[i].name
-                const dim_unit = this.ChildProperty.dimensions[i].unit
-                const index = i
-                this.dimensions.push(new Dimension(
-                  this.ChildProperty.id,
-                  this.ChildProperty.name,
-                  dim_name,
-                  dim_unit,
-                  this.getData(index,data['property'].values)
-                  ))
-                }
             })
-
         }
       }
     }
-
-      getDimensionSize(property:Property):number{
-        var array :  string[] = []
-        for(var i = 0; i <= property.dimensions.length; i++){
-          if(i == property.dimensions.length){
-            return array.length
-          }else{
-            if(!array.includes(property.dimensions[i].name)){
-              array.push(property.dimensions[i].name)
-            }
-          }
-        }
-      }
 
       toggle(event: MatSlideToggleChange) {
         this.checked = event.checked;

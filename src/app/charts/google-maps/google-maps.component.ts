@@ -9,10 +9,11 @@ import {Property,Dimension} from '../../../classes'
 
 export class GoogleMapsComponent {
 
-    @Input() property:Property
-    @Input() dimensions: Dimension;
+    @Input() entity_id:string
+    @Input() values : any[]
     @Input() apiKey: string;
     @Input() checked: boolean;
+    @Input() property_dimensions:any[]
 
     lat: number
     lng: number
@@ -21,27 +22,30 @@ export class GoogleMapsComponent {
 
     showData : boolean = false
     ref : boolean = true 
-    index : number
     sliderSize:number = 0
+    index_slider : number
+    date:Date
 
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges) {
 
-      if(!(changes.dimensions === undefined)){
+      if(!(changes.values === undefined)){
         this.refresh()
-        const val:Dimension[]  = changes.dimensions.currentValue
+        const values:any[]  = changes.values.currentValue
         if(this.checked){
-          this.show_realtime(val)
+          this.show_realtime(values)
         }else{
-          this.show_manual(val)
+          this.show_manual(values)
         }
       }
       }
     
+
      handleChange(e) {
         //e.value is the new value (is index)
-        this.index = e.value
+        this.index_slider = e.value
+        this.date = new Date(this.values[this.index_slider][0])
     }
 
     
@@ -49,14 +53,14 @@ export class GoogleMapsComponent {
         this.ref = !this.ref
     }
 
-    show_realtime(val:Dimension[]){
+    show_realtime(values:any[]){
       this.markers['markers']= []
-      if(val.length>0){
-        if(val[0].data.length>0){
+      if(values.length>0){
           this.showData = true
-          this.index = val[0].data.length-1
-          const last_lat = val[0].data[this.index].value
-          const last_lng = val[1].data[this.index].value
+          this.index_slider = values.length-1
+          this.date = new Date(values[this.index_slider][0])
+          const last_lat = values[this.index_slider][1]
+          const last_lng = values[this.index_slider][2]
 
               this.lat = last_lat
               this.lng = last_lng
@@ -68,15 +72,15 @@ export class GoogleMapsComponent {
                     lng: last_lng,
                     icon: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
                     infoWindowOptions: {
-                    content: this.property.entitiy_id +' '+val[0].data[this.index].name
+                    content: this.entity_id +' '+values[this.index_slider][0]
                     }
                 }
                 ],
                 fitBounds: false
                 }
                 this.options = {zoom: 9};
-        }
       }
+    }
       else{
         this.showData = false
            this.lat = 1
@@ -88,39 +92,33 @@ export class GoogleMapsComponent {
            this.options = {zoom: 1};
       }
     }
-    }
 
-    show_manual(val:Dimension[]){
+    show_manual(values:any[]){
       this.markers['markers']= []
-      console.log('got val: ', val);
-      this.sliderSize = val[0].data.length -1
+      this.sliderSize = values.length-1
 
-      if(val.length>0){
-          if(val[0].data.length>0){
+      if(values.length>0){
               this.showData = true
-              this.index = val[0].data.length-1
+              this.index_slider = values.length-1
+              this.date = new Date(values[this.index_slider][0])
 
-              const last_lat = val[0].data[this.index].value
-              const last_lng = val[1].data[this.index].value
+              const last_lat = values[this.index_slider][1]
+              const last_lng = values[this.index_slider][2]
 
               this.lat = last_lat
               this.lng = last_lng
 
-              this.markers['markers']
-
-              if(last_lat !== undefined && last_lng !== undefined){
-                  for(var i = 0; i <= val[0].data.length-1; i++){
+              for(var i = 0; i <= values.length-1; i++){
                     this.markers['markers'].push({
-                        lat: val[0].data[i].value,
-                        lng: val[1].data[i].value,
+                        lat: values[i][1],
+                        lng: values[i][2],
                         icon: 'https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi.png',
                         infoWindowOptions: {
-                        content: this.property.entitiy_id +' '+val[0].data[i].name
+                        content: this.entity_id +' '+values[i][0]
                         }
                     })
                   }
 
-             }
              this.markers['fitBounds'] = true
              this.options = {zoom: 9};
           }else{
@@ -134,7 +132,6 @@ export class GoogleMapsComponent {
            this.options = {zoom: 1};
           }
       }
-    }
 }
 
   

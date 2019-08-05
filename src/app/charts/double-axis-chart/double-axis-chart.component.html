@@ -109,7 +109,7 @@
                [visibleValue]="hoveredVertical"
                [activeEntries]="activeEntries"
                [tooltipDisabled]="tooltipDisabled"
-               (select)="onClick($event, series)"
+               (select)="onClick($event)"
                (activate)="onActivate($event)"
                (deactivate)="onDeactivate($event)"
         />
@@ -125,7 +125,7 @@
                [visibleValue]="hoveredVertical"
                [activeEntries]="activeEntries"
                [tooltipDisabled]="tooltipDisabled"
-               (select)="onClick($event, series)"
+               (select)="onClick($event)"
                (activate)="onActivate($event)"
                (deactivate)="onDeactivate($event)"
         />
@@ -142,7 +142,6 @@
          [customColors]="customColors"
          [scaleType]="scaleType"
          [legend]="legend"
-         (select)="test($event)"
          (onDomainChange)="updateDomain($event)">
     <svg:g *ngFor="let series of comboArr; trackBy:trackBy">
       <svg:g ngx-charts-line-series
@@ -152,7 +151,6 @@
              [data]="series"
              [scaleType]="scaleType"
              [curve]="curve"
-             [hasRange]="hasRange"
              [animations]="animations"
       />
     </svg:g>

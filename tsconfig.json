@@ -7,13 +7,22 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2015",
+    "target": "es6",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "dcd-ui-angular": [
+        "dist/dcd-ui-angular"
+      ],
+      "dcd-ui-angular/*": [
+        "dist/dcd-ui-angular/*"
+      ]
+    }
   }
 }

@@ -7,9 +7,5 @@
     }
   },
   "whitelistedNonPeerDependencies": [
-    "primeicons",
-    "primeng",
-    "chart.js",
-    "ng2-charts"
   ]
 }
