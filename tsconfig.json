@@ -14,15 +14,6 @@
     "lib": [
       "es2017",
       "dom"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "dcd-ui-angular": [
-        "dist/dcd-ui-angular"
-      ],
-      "dcd-ui-angular/*": [
-        "dist/dcd-ui-angular/*"
-      ]
-    }
+    ]
   }
 }
