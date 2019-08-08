@@ -1,4 +1,4 @@
-import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
+import { Component, Inject, Optional,PLATFORM_ID, OnInit} from '@angular/core';
 
 import {isPlatformServer} from "@angular/common";
 

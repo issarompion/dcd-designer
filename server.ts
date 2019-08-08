@@ -38,7 +38,7 @@ app.engine('html', ngExpressEngine({
 }));
 
 app.set('view engine', 'html');
-app.set('views', join(DIST_FOLDER, 'browser','subject'));
+app.set('views', join(DIST_FOLDER, 'browser','designer'));
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
@@ -52,8 +52,8 @@ const PORT = process.env.PORT || 8080;
 
 const baseUrl = process.env.BASE_URL || ""
 
-const redirectUrl = process.env.BASE_URL || ""
-//const redirectUrl = "/subject"
+//const redirectUrl = process.env.BASE_URL || ""
+const redirectUrl = "/subject"
 
 const google_maps_key = process.env.MAPS_KEY
 

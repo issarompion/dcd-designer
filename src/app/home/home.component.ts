@@ -1,7 +1,7 @@
-import { Component, Inject, Optional,PLATFORM_ID, OnInit} from '@angular/core';
+import { Component, Inject,PLATFORM_ID, OnInit} from '@angular/core';
 import {isPlatformServer} from "@angular/common";
+import {HttpClientService,Property} from '@datacentricdesign/ui-angular'
 import { MatSlideToggleChange } from '@angular/material';
-
 
 @Component({
     selector: 'app-home',
@@ -9,6 +9,8 @@ import { MatSlideToggleChange } from '@angular/material';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  properties : Property[] = [] 
 
   checked:boolean = false
   mode : string = "TYPE"
@@ -22,11 +24,14 @@ export class HomeComponent implements OnInit {
     }
 }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object,) {}
+  constructor(@Inject(
+    PLATFORM_ID) private platformId: Object,
+    private service: HttpClientService
+  ) {}
 
     ngOnInit(): void {
       if (isPlatformServer(this.platformId)) {
-        console.log('Init Home component server'); // host on the server  
+        console.log('Init Home component server'); // host on the server 
         } else {
          this.BrowserUniversalInit()
       }
@@ -34,6 +39,21 @@ export class HomeComponent implements OnInit {
 
     BrowserUniversalInit(){
       console.log('Init Home component browser')
+      this.FillStructuredArrayThing()
+    }
+
+    FillStructuredArrayThing() {
+      this.service.get('api/things').subscribe(
+        data1 => {
+        data1['things'].forEach(thing_json => {
+          this.service.get('api/things/'+thing_json.id).subscribe(
+          data2 => {
+            data2['thing'].properties.forEach(prop_json=>{
+              this.properties.push(new Property(prop_json))
+            })
+        });
+      });
+    });
     }
 
   }
