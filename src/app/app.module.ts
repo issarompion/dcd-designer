@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 //Components
 import {AppComponent} from './app.component';
@@ -18,6 +19,9 @@ import {TransferHttpCacheModule} from '@nguniversal/common';
 // MatUI
 import {MatButtonModule} from '@angular/material/button';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle'
+
+//prime-ng
+import {CalendarModule} from 'primeng/calendar';
 
 //@datacentricdesign/ui-angular
 import {UiAngularModule, HttpClientService} from '@datacentricdesign/ui-angular';
@@ -47,10 +51,12 @@ import { MyThingsComponent } from './my-things/my-things.component'
       {path : '**',redirectTo: '/page/home',pathMatch: 'full'},
     ]),
     TransferHttpCacheModule,
+    FormsModule,
     MatButtonModule,
     HttpClientModule,
     UiAngularModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    CalendarModule
   ],
   providers: [
     HttpClientService
