@@ -15,12 +15,12 @@ export class HomeComponent implements OnInit {
   checked:boolean = false
   mode : string = "TYPE"
   rangeDates: Date[]
+  dateTime = new Date();
 
   toggle(event: MatSlideToggleChange) {
     this.checked = event.checked;
     if(event.checked){
       this.mode = "DATA COLLECTION"
-      console.log(this.properties)
     }else{
       this.mode = "TYPE"
     }

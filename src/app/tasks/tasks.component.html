@@ -1,0 +1,95 @@
+<h3 style = "text-align: center">Tasks</h3>
+<div class="top-container">
+        <div class="create-task-container">
+                <div  class="card card-stats">
+                        <div class="card-header card-header-danger card-header-icon">
+                            <div class="card-icon">
+                                <i class="fas fa-user" ></i>
+                            </div>
+                            <p class="card-category">Persons</p>
+                            <h3 class="card-title">{{total_persons}}</h3>
+                        </div>
+                </div>
+                <div  class="card card-stats">
+                        <div class="card-header card-header-success card-header-icon">
+                            <div class="card-icon">
+                                <i class="fas fa-mobile" ></i>
+                            </div>
+                            <p class="card-category">Things</p>
+                            <h3 class="card-title">{{total_things}}</h3>
+                        </div>
+                </div>
+
+            <mat-card>
+                    Create Task
+                    <mat-form-field>
+                            <input matInput [(ngModel)]="new_task_name" placeholder="Name">
+                        </mat-form-field>
+                    
+                        <mat-form-field>
+                                <mat-label>Type(s)</mat-label>
+                                <mat-select [(ngModel)]="new_task_types" multiple>
+                                  <mat-option *ngFor="let type of GetPropertyType()" [value]="type">
+                                    {{type}}
+                                  </mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                    
+                        <p-calendar [maxDate]="dateTime" placeholder="Range date" [(ngModel)]="new_task_range" selectionMode="range" [readonlyInput]="true"></p-calendar>
+                    
+                        <button style ="margin-left: 2%" mat-mini-fab color="primary" [disabled] = "CheckTask()" (click)="CreateTask(new_task_name,new_task_types,new_task_range)"  >
+                                <i class="fas fa-plus" ></i>
+                        </button>
+            </mat-card>
+        </div>
+
+        <div class ="stats-container">
+                <div  class="card card-stats">
+                        <div class="card-header card-header-info card-header-icon">
+                            <div class="card-icon">
+                                <i class="fas fa-poll" ></i>
+                            </div>
+                            <p class="card-category">Properties</p>
+                            <h3 class="card-title">{{total_properties}}</h3>
+                        </div>
+                        <div class="card-body" id ="chart-body">
+                                <h4 style="text-align: left">{{stat_task_type}}</h4>
+                                <div class ="stat-progress-bar"> Entities {{EntitiesPercentage()}} % ({{type_range_entities}}/{{type_total_entities}})
+                                        <mat-progress-bar
+                                                [value]="EntitiesPercentage()">
+                                            </mat-progress-bar>
+                                </div>
+                                <div class ="stat-progress-bar">Properties {{PropertiesPercentage()}} % ({{type_range_properties}}/{{type_total_properties}})
+                                        <mat-progress-bar
+                                                [value]="PropertiesPercentage()">
+                                        </mat-progress-bar>
+                
+                                </div>
+                                <div class ="stat-progress-bar">Values {{ValuesPercentage()}} % ({{type_range_values}}/{{type_total_values}})
+                                        <mat-progress-bar
+                                                [value]="ValuesPercentage()">
+                                        </mat-progress-bar>
+                                </div>
+
+                        </div>
+                        <div class="card-footer">
+                                <mat-form-field style="text-align: center">
+                                        <mat-label>Type</mat-label>
+                                        <mat-select [(ngModel)]="stat_task_type" (selectionChange)="OnChange()" >
+                                          <mat-option *ngFor="let type of GetPropertyType()" [value]="type">
+                                            {{type}}
+                                          </mat-option>
+                                        </mat-select>
+                                </mat-form-field>
+
+                                <p-calendar [maxDate]="dateTime" placeholder="Range (default : all time)" [(ngModel)]="stat_task_range" selectionMode="range" [readonlyInput]="true" (onSelect)="OnChange()"></p-calendar>
+                        </div>
+                </div>
+        </div>
+</div>
+
+<div class="bottom-container">
+    <div class ="task-list-container">
+        TaskList
+    </div>
+</div>

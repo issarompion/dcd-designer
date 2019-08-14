@@ -1,0 +1,40 @@
+.top-container{
+    display: inline-table;
+    width:  100%;
+    text-align: center;
+    max-height: 500px;
+}
+
+.create-task-container{
+    display: table-row;
+    width: 40%;
+    float:left;
+    margin-left: 7%
+}
+
+.stats-container{
+    display: table-row;
+    width: 40%;
+    margin-right: 7%;
+    float: right;
+}
+#chart-body{
+display: grid;
+max-height: 400px;
+}
+
+
+.bottom-container{
+    width: 100%;
+}
+
+.bottom-container{
+    width:  100%;
+    text-align: center;
+    margin-top: 2%
+}
+
+.stat-progress-bar{
+margin-top:  3%;
+margin-bottom: 5%
+}
