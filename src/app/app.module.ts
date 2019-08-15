@@ -25,12 +25,17 @@ import {MatInputModule} from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatTableModule} from '@angular/material/table';
 
 //prime-ng
 import {CalendarModule} from 'primeng/calendar';
+import {MatDialogModule} from '@angular/material/dialog';
+import {ButtonModule} from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
 
 //@datacentricdesign/ui-angular
 import {UiAngularModule} from '@datacentricdesign/ui-angular';
+
 
 @NgModule({
   declarations: [
@@ -66,7 +71,12 @@ import {UiAngularModule} from '@datacentricdesign/ui-angular';
     MatInputModule,
     MatSelectModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTableModule,
+    MatDialogModule,
+    ButtonModule,
+    DialogModule
+
   ],
   providers: [
   ],
