@@ -24,7 +24,7 @@
                     
                         <p-calendar placeholder="Range date" [(ngModel)]="new_task_range" selectionMode="range" [readonlyInput]="true"></p-calendar>
                     
-                        <button style ="margin-left: 2%" mat-mini-fab color="primary" [disabled] = "CheckTask()" (click)="CreateTask(new_task_name,new_task_types,new_task_range)"  >
+                        <button style ="margin-left: 2%" mat-mini-fab color="primary" [disabled] = "CheckTask()" (click)="CreateTask(new_task_name,new_task_types,new_task_range,new_task_description)"  >
                                 <i class="fas fa-plus" ></i>
                         </button>
             </mat-card>
@@ -39,6 +39,7 @@
                                 <thead>
                                 <tr>
                                   <th scope="col">#</th>
+                                  <th scope="col">Date</th>
                                   <th scope ="col">Name</th>
                                   <th scope="col">Progress</th>
                                 </tr>
@@ -46,6 +47,7 @@
                                 <tbody>
                                         <tr *ngFor="let task of tasks; index as i" >
                                                 <td>{{i}}</td>
+                                                <td>{{task.getDate()}}</td>
                                                 <td>{{task.name}}</td>
                                                 <td>
                                                         <mat-progress-bar
@@ -53,7 +55,7 @@
                                                         </mat-progress-bar>
                                                 </td>
                                                 <th scope="row">
-                                                        <button style="float: right" pButton type="button" (click)="display_task = true" icon="pi pi-th-large"></button>
+                                                        <button style="float: right" pButton type="button" (click)="showDialog_Task(task)" icon="pi pi-th-large"></button>
                                                 </th>
                                         </tr>
                                 </tbody>
@@ -68,7 +70,7 @@
 <p-dialog [(header)]="task_picked.name" [(visible)]="display_task" [modal]="true" [responsive]="true" [style]="{width: '60%', minWidth: '700px'}" 
      [maximizable]="true" [baseZIndex]="10000">
      <div>
-     task body
+        table with all the people involved and their advancements / steps
      </div>
      <p-footer>
         task footer

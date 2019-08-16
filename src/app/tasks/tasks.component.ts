@@ -13,6 +13,7 @@ export class TasksComponent implements OnInit {
   new_task_name : string
   new_task_types : string[]
   new_task_range : Date[]
+  new_task_description:string
   dateTime = new Date();
   
 
@@ -40,9 +41,20 @@ GetPropertyType():string[]{
     return res
 }
 
-CreateTask(task_name:string,task_types:string[],task_range:Date[]){
-    console.log(task_name,task_types,task_range)
-    this.tasks.push(new Task(undefined,task_name,task_types,task_range[0].getTime(),task_range[1].getTime()))
+CreateTask(task_name:string,task_types:string[],task_range:Date[],task_description:string){
+    console.log(task_name,task_types,task_range,task_description)
+    this.tasks.push(
+      new Task(
+        undefined,
+        task_name,
+        task_types,
+        task_range[0].getTime(),
+        task_range[1].getTime(),
+        task_description,
+        new Date().getTime(),
+        'irompion@yahoo.fr'
+        )
+      )
 }
 
 CheckTask():boolean{
@@ -66,28 +78,78 @@ OnChange(){
 }
 
 display_task : boolean = false
-task_picked : Task = new Task('','',undefined,undefined,undefined)
+task_picked : Task = new Task('','',undefined,undefined,undefined,undefined,undefined,undefined)
 
 tasks:Task[] = [
-  new Task('id1','task1',undefined,undefined,undefined),
-  new Task('id2','task2',undefined,undefined,undefined),
-  new Task('id3','task3',undefined,undefined,undefined),
+
+new Task(
+  'id1',
+'task1',
+['LOCATION'],
+0,
+new Date().getTime(),
+"We wan't your location for a study",
+new Date(2019,1,1).getTime(),
+'actor_entity_id1'
+),
+
+new Task(
+  'id3',
+'task3',
+['THREE_DIMENSIONS'],
+new Date(2019,3,1).getTime(),
+new Date().getTime(),
+"We wan't your location for a study",
+new Date(2019,3,1).getTime(),
+'actor_entity_id1'
+)
+
 ]
+
+async setChild(task : Task){
+  this.task_picked = task
+}
+
+showDialog_Task(task : Task) {
+    this.setChild(task).then(()=>this.display_task = true)
+    
+}
 
 }
 
 export class Task {
+
   id : string
   name: string;
   types:string[];
   from : number 
   to : number 
+  description:string
+  registred_at:number
+  actor_entity_id : string
 
-  constructor(id:string,name:string,types:string[],from:number,to:number){
+  constructor(
+    id:string,
+    name:string,
+    types:string[],
+    from:number,
+    to:number,
+    description:string,
+    registred_at:number,
+    actor_entity_id : string
+    ){
     this.id = id
     this.name = name
     this.types = types
     this.from = from
     this.to = to
+    this.description = description
+    this.registred_at = registred_at
+    this.actor_entity_id = actor_entity_id
   }
+
+  getDate():Date{
+    return new Date(this.registred_at)
+  }
+
 }

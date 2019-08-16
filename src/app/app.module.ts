@@ -35,6 +35,9 @@ import {DialogModule} from 'primeng/dialog';
 //@datacentricdesign/ui-angular
 import {UiAngularModule} from '@datacentricdesign/ui-angular';
 
+//To DELETE
+/*import {HttpClientService} from './http-client.service'*/
+
 
 @NgModule({
   declarations: [
@@ -76,6 +79,7 @@ import {UiAngularModule} from '@datacentricdesign/ui-angular';
 
   ],
   providers: [
+    //HttpClientService
   ],
   bootstrap: [AppComponent]
 })
