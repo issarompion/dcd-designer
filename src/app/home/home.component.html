@@ -12,6 +12,6 @@
       <p-calendar [maxDate]="dateTime" *ngIf="checked" placeholder="Choose your range date"[(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" (onSelect)="getValues(rangeDates)"></p-calendar>
 </div>
 <div class = "display-container">
-    <lib-property-types [properties]="properties" *ngIf="!checked"></lib-property-types>
+    <lib-data-types [properties]="properties" *ngIf="!checked"></lib-data-types>
     <lib-data-collections [properties]="properties" *ngIf="checked"></lib-data-collections>
 </div>

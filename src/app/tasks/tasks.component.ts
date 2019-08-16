@@ -42,7 +42,7 @@ GetPropertyType():string[]{
 
 CreateTask(task_name:string,task_types:string[],task_range:Date[]){
     console.log(task_name,task_types,task_range)
-    this.tasks.push(new Task(task_name,task_types,task_range[0].getTime(),task_range[1].getTime()))
+    this.tasks.push(new Task(undefined,task_name,task_types,task_range[0].getTime(),task_range[1].getTime()))
 }
 
 CheckTask():boolean{
@@ -66,23 +66,25 @@ OnChange(){
 }
 
 display_task : boolean = false
-task_picked : Task = new Task('',undefined,undefined,undefined)
+task_picked : Task = new Task('','',undefined,undefined,undefined)
 
 tasks:Task[] = [
-  new Task('task1',undefined,undefined,undefined),
-  new Task('task2',undefined,undefined,undefined),
-  new Task('task3',undefined,undefined,undefined),
+  new Task('id1','task1',undefined,undefined,undefined),
+  new Task('id2','task2',undefined,undefined,undefined),
+  new Task('id3','task3',undefined,undefined,undefined),
 ]
 
 }
 
 export class Task {
+  id : string
   name: string;
   types:string[];
   from : number 
   to : number 
 
-  constructor(name:string,types:string[],from:number,to:number){
+  constructor(id:string,name:string,types:string[],from:number,to:number){
+    this.id = id
     this.name = name
     this.types = types
     this.from = from
