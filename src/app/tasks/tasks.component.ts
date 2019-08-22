@@ -1,5 +1,5 @@
 import { Component,Inject,PLATFORM_ID, OnInit } from '@angular/core';
-import { PropertyType, HttpClientService } from '@datacentricdesign/ui-angular'
+import { PropertyType,Task, Resource, Milestone, HttpClientService} from '@datacentricdesign/ui-angular'
 import {isPlatformServer} from "@angular/common";
 
 @Component({
@@ -9,6 +9,13 @@ import {isPlatformServer} from "@angular/common";
 })
 
 export class TasksComponent implements OnInit {
+
+  actor_entity_id :string = 'irompion@yahoo.fr'
+
+  display_task : boolean = false
+  task_picked : Task = new Task({})
+
+  tasks:Task[] = []
 
   new_task_name : string
   new_task_types : string[]
@@ -31,6 +38,19 @@ export class TasksComponent implements OnInit {
     }
 
 BrowserUniversalInit(){
+  this.service.get('api/user').subscribe(
+    data => {
+      this.actor_entity_id = data['sub'].split('dcd:persons:')[1]
+    })
+  
+  this.service.get('api/tasks').subscribe(
+    data => {
+      console.log('data',data['tasks'].actor_tasks)
+      data['tasks'].actor_tasks.forEach(task_params => {
+        //console.log(task_params)
+        this.tasks.push(new Task(task_params))
+      });
+    })
 }
 
 GetPropertyType():string[]{
@@ -44,17 +64,15 @@ GetPropertyType():string[]{
 CreateTask(task_name:string,task_types:string[],task_range:Date[],task_description:string){
     console.log(task_name,task_types,task_range,task_description)
     this.tasks.push(
-      new Task(
-        undefined,
-        task_name,
-        task_types,
-        task_range[0].getTime(),
-        task_range[1].getTime(),
-        task_description,
-        new Date().getTime(),
-        'irompion@yahoo.fr'
-        )
-      )
+      new Task({
+        name: task_name,
+        description: task_description,
+        types: task_types,
+        from : task_range[0].getTime(),
+        to : task_range[1].getTime(),
+        actor_entity_id : 'irompion@yahoo.fr'
+    })
+    )
 }
 
 CheckTask():boolean{
@@ -77,79 +95,12 @@ OnChange(){
   //console.log(this.new_task_types)
 }
 
-display_task : boolean = false
-task_picked : Task = new Task('','',undefined,undefined,undefined,undefined,undefined,undefined)
-
-tasks:Task[] = [
-
-new Task(
-  'id1',
-'task1',
-['LOCATION'],
-0,
-new Date().getTime(),
-"We wan't your location for a study",
-new Date(2019,1,1).getTime(),
-'actor_entity_id1'
-),
-
-new Task(
-  'id3',
-'task3',
-['THREE_DIMENSIONS'],
-new Date(2019,3,1).getTime(),
-new Date().getTime(),
-"We wan't your location for a study",
-new Date(2019,3,1).getTime(),
-'actor_entity_id1'
-)
-
-]
-
 async setChild(task : Task){
   this.task_picked = task
 }
 
 showDialog_Task(task : Task) {
-    this.setChild(task).then(()=>this.display_task = true)
-    
+    this.setChild(task).then(()=>this.display_task = true)  
 }
-
-}
-
-export class Task {
-
-  id : string
-  name: string;
-  types:string[];
-  from : number 
-  to : number 
-  description:string
-  registred_at:number
-  actor_entity_id : string
-
-  constructor(
-    id:string,
-    name:string,
-    types:string[],
-    from:number,
-    to:number,
-    description:string,
-    registred_at:number,
-    actor_entity_id : string
-    ){
-    this.id = id
-    this.name = name
-    this.types = types
-    this.from = from
-    this.to = to
-    this.description = description
-    this.registred_at = registred_at
-    this.actor_entity_id = actor_entity_id
-  }
-
-  getDate():Date{
-    return new Date(this.registred_at)
-  }
 
 }
