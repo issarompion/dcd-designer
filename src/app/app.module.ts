@@ -7,7 +7,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 //Components
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
-import {NotificationsComponent} from './notifications/notifications.component';
 import { NavbarComponent} from './navbar/navbar.component';
 import {UserComponent} from './user/user.component';
 import { MyThingsComponent } from './my-things/my-things.component'
@@ -26,11 +25,15 @@ import {MatCardModule} from '@angular/material/card';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 //prime-ng
 import {CalendarModule} from 'primeng/calendar';
 import {ButtonModule} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+
+//Vertical timeline
+import { VerticalTimelineModule } from 'angular-vertical-timeline';
 
 //@datacentricdesign/ui-angular
 import {UiAngularModule} from '@datacentricdesign/ui-angular';
@@ -43,7 +46,6 @@ import {UiAngularModule} from '@datacentricdesign/ui-angular';
   declarations: [
     AppComponent,
     HomeComponent,
-    NotificationsComponent,
     NavbarComponent,
     UserComponent,
     MyThingsComponent,
@@ -56,7 +58,6 @@ import {UiAngularModule} from '@datacentricdesign/ui-angular';
       {path : 'page/home', component : HomeComponent, pathMatch: 'full' },
       {path : 'page/user', component : UserComponent, pathMatch: 'full' },
       {path : 'page/things', component : MyThingsComponent, pathMatch:'full'},
-      {path : 'page/notifications', component : NotificationsComponent, pathMatch: 'full'},
       {path : 'page/tasks', component : TasksComponent, pathMatch:'full'},
       {path : '**',redirectTo: '/page/home',pathMatch: 'full'},
     ]),
@@ -75,7 +76,9 @@ import {UiAngularModule} from '@datacentricdesign/ui-angular';
     MatTableModule,
     MatDialogModule,
     ButtonModule,
-    DialogModule
+    DialogModule,
+    MatExpansionModule,
+    VerticalTimelineModule
 
   ],
   providers: [

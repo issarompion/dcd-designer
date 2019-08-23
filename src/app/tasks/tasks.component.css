@@ -31,3 +31,13 @@
     width: 86%;
     margin: 0 auto;
 }
+
+.milestone-status{
+    float: left;
+    
+}
+
+.milestone-shared-properties{
+    margin-top: 50px;
+    float: right
+}

@@ -13,7 +13,7 @@
                     
                         <mat-form-field>
                                 <mat-label>Type(s)</mat-label>
-                                <mat-select [(ngModel)]="new_task_types" (selectionChange)="OnChange()" multiple>
+                                <mat-select [(ngModel)]="new_task_types" multiple>
                                   <mat-option *ngFor="let type of GetPropertyType()" [value]="type">
                                     {{type}}
                                   </mat-option>
@@ -46,7 +46,7 @@
                                 </thead>
                                 <tbody>
                                         <tr *ngFor="let task of tasks; index as i" >
-                                                <td>{{i}}</td>
+                                                <td>{{i+1}}</td>
                                                 <td>{{task.getDate()}}</td>
                                                 <td>{{task.name}}</td>
                                                 <td>
@@ -67,12 +67,38 @@
 <br><br>
 </p>
 
-<p-dialog [(header)]="task_picked.name" [(visible)]="display_task" [modal]="true" [responsive]="true" [style]="{width: '60%', minWidth: '700px'}" 
+<p-dialog [(header)]="task_picked.name" [(visible)]="display_task" [modal]="true" [responsive]="true" [style]="{width: '80%', minWidth: '1000px'}" 
      [maximizable]="true" [baseZIndex]="10000">
      <div>
-        table with all the people involved and their advancements / steps
+        <h3 style="text-align: center">List of resources</h3>
+        <mat-accordion>
+                <mat-expansion-panel *ngFor="let resource of task_picked.resources">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{resource.id}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{resource.milestones[resource.milestones.length-1].status}}
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <vertical-timeline> 
+
+                                <vertical-timeline-card *ngFor="let milestone of resource.milestones" [dateValue]="getDate(milestone.timestamp)">
+                                        <div class = "milestone-status">
+                                                                Status  :    {{milestone.status}}
+                                        </div>
+                                        
+                                        <div class = "milestone-shared-properties">
+                                                                {{milestone.shared_properties.join()}}
+                                        </div>    
+
+                                </vertical-timeline-card>
+                               
+                            </vertical-timeline>
+                </mat-expansion-panel>
+        </mat-accordion>
      </div>
      <p-footer>
-        task footer
+        {{task_picked.types.join()}} from : {{getDate(task_picked.from)}}, to : {{getDate(task_picked.to)}}
      </p-footer>
 </p-dialog>
