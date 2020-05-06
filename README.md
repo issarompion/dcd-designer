@@ -1,5 +1,7 @@
 # dcd-designer
 
+A Web UI for designers of the [Data-Centric Design Lab](https://github.com/datacentricdesign)
+
 ## production mode
 
 - `npm run prod`
